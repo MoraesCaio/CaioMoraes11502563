@@ -1,0 +1,8 @@
+Arquivo lido:	video.ts
+Tamanho em bytes:	13.855.788 bytes
+Total de pacotes lidos:	73.701
+Total de PAT encontrados:	2.217
+Total de PMT encontrados:	2.217
+Quantidade de PID's diferentes para pacotes PMT neste arquivo:  1
+Lista dos PID dos pacotes PMT:
+480

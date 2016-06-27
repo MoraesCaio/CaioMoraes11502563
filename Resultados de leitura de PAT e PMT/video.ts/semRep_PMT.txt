@@ -1,0 +1,77 @@
+Abaixo consta a lista de todos os PMT que se diferenciam dos demais
+desconsiderando os incrementos do Continuity_Counter.
+Sendo assim, deve-se desconsiderar os valores desse counter neste arquivo.
+Quantidade encontrada de pacotes PMT não repetidos:	1
+
+PMT Packet
+
+Header:
+sync_byte: *0100.0111* = 71
+transport_error_indicator: *0*
+payload_unit_start_indicator: *1*
+transport_priority: *1*
+PID: *0.0001/1110.0000* = 480
+transport_scrambling_control: *00*
+adaptation_field_control: *01*
+continuity_counter: *0000*
+
+Adaptation Field:
+Adaptation_field_length: *0000.0000*
+Discontinuity_indicator: *0*
+Random_access_indicator: *0*
+Elementary_stream_priority_indicator: *0*
+PCR_flag: *0*
+OPCR_flag: *0*
+Splicing_point_flag: *0*
+Transport_private_data_flag: *0*
+Adaptation_field_extension_flag: *0*
+Program_clock_reference_base: 0
+Program_clock_reference_extension: 0
+Original_program_clock_reference_base: 0
+Original_program_clock_reference_extension: 0
+Splice_countdown: *0000.0000*
+Transport_private_data_length: *0000.0000*
+Private_data_byte: *0000.0000*
+Adaptation_field_extension_length: *0000.0000*
+Ltw_flag: *0*
+Piecewise_rate_flag: *0*
+Seamless_splice_flag: *0*
+Ltw_valid_flag: *0*
+Ltw_offset: *000.0000/0000.0000*
+Piecewise_rate: *00.0000/0000.0000/0000.0000*
+Splice_type: *0000*
+DTS_next_AU: *0000.0000/0000.0000/0000.0000/0000.0000*
+Number of reserved bytes at the end of Adaptation Field Extension: 0
+
+
+Body:
+Table_id: *0000.0010* = 2
+Section_syntax_indicator: *1*
+Section_length: *0000/0001.0111* = 23
+Program_number: *0000.0000/0000.0001*
+Version_number: *0.0000*
+Current_next_indicator: *1*
+Section_number: *0000.0000*
+Last_section_number: *0000.0000*
+PCR_PID: *0.0001/1110.0001* = 57825
+Program_info_length: *0000/0000.0000* = 0
+
+Program Info:
+
+Extensão de info:
+
+Stream_type: *0001.1011*
+Elementary_PID: *0.0001/1110.0001*
+ES_info_length: *0000/0000.0000*
+Lista de Descriptors:
+
+Fim da lista de Descriptors.
+
+Stream_type: *0000.1111*
+Elementary_PID: *0.0001/1110.0010*
+ES_info_length: *0000/0000.0000*
+Lista de Descriptors:
+
+Fim da lista de Descriptors.
+CRC_32: *1011.1101/1011.0000/0101.1001/1001.0011* = bdb05993
+

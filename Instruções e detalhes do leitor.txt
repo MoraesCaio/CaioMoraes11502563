@@ -1,0 +1,66 @@
+Todos os códigos fonte utilizados nesse programa, com exceção do EqualsBuilder 3.4(Apache Commons), foram criados por 
+Caio César Moraes de Oliveira, aluno do curso de Ciência da Computação - UFPB, matrícula 11502563.
+
+Esse programa lê o fluxo de pacotes TS de um arquivo ".ts" que tenha o nome informado e que esteja presente na pasta do executável. O programa avisará caso não encontre o arquivo ou a extensão informada não esteja correta. Se a extensão não for informada, o programa considerará, em sua busca, a extensão ".ts".
+Após o término da leitura, haverá um aviso (janela) anunciando o sucesso da leitura. Para o vídeo da atividade (vídeo.ts, 13.2 mB) o tempo estimado é de 41 segundos.
+São gerados 5 arquivos por leitura:
+	log.txt.txt
+		Contém as seguintes informações:
+			- Arquivo lido;
+			- Tamanho em bytes;
+			- Total de pacotes lidos;
+			- Total de PAT encontrados;
+			- Total de PMT encontrados;
+			- Quantidade de PID's diferentes para pacotes PMT neste arquivo;
+			- Lista dos PID dos pacotes PMT.
+	listaPAT.txt
+		Contém a listagem ordenada de PAT's encontrados e suas respectivas descrições de:
+			- header (4 primeiros bytes do pacote);
+			- adaptation field (tamanho >= 1 byte), todas as informações padrões (de tamanho fixo) terão valor 0 caso não devam lidas;
+			- body (tamanho >= 3). Todas as informações padrões (de tamanho fixo) terão valor 0 caso não devam ser lidas. As demais só serão registradas se o tamanho da seção informar que devem ser lidas.
+	listaPMT.txt
+		Contém a listagem ordenada de PMT's encontrados e suas respectivas descrições de:
+			- header (4 primeiros bytes do pacote);
+			- adaptation field (tamanho >= 1 byte), todas as informações padrões (de tamanho fixo) terão valor 0 caso não devam lidas;
+			- body (tamanho >= 3). Todas as informações padrões (de tamanho fixo) terão valor 0 caso não devam ser lidas. As demais só serão registradas se o tamanho da seção informar que devem ser lidas.
+	Na estrutura de uma arquivo ts, há a possibilidade de muitos pacotes PAT e PMT se diferenciarem apenas pelos seus contadores de continuidade (continuity_counter). Para facilitar a leitura dos resultados, os dois arquivos a seguir servem para registrar cada PAT e PMT que se diferenciam dos demais desconsiderando o contador de continuidade.
+	semRep_PAT.txt
+		semelhante a listaPAT.txt
+	semRep_PMT.txt
+		semelhante a listaPMT.txt
+
+
+Como o programa limpa os arquivos de saída (se estes já existirem), os mesmos serão gerados em "...PastaAtual\Resultados de leitura de PAT e PMT\nomeDoArquivo.ts\". Dessa maneira vários arquivos diferentes podem ser lidos sem ocorrer sobreescrita apenas atualização da informação. Também devido a isso, não há risco de sobreescrever algum arquivo homônimo pré-existente na PastaAtual.
+
+Para a criação desse programa foi utilizado o pacote EqualsBuilder (v 3.4) do Apache Commons.
+Os demais pacotes são:
+	- descriptorsPMT - contém estruturas das seções descriptor() contidas no corpo de pacotes PMT;
+	- estruturasPATePMT - contém as classes dos próprios PAT e PMT e de estruturas que moldam os PAT e PMT;
+	- manipulacaoBitByte - contém a classe ByteReader que foi utilizada no leitor em conjunto com FileInputStream;
+	- default - contém a classe contendo main e o TS_Reader, o leitor de arquivos ".ts".
+
+Algumas informações sobre as classes
+"reserved" e '0':
+ - foram desconsiderados os campos de preenchimento tanto na leitura do arquivo, quanto na escrita do programa.
+
+"read()":
+ - todas as classes de descriptorsPMT e de estruturasPATePMT, com exceção dos próprios PAT e PMT (será explicado mais a frente), possuem um método read() específico que:
+ 	+ lê a quantidade de byte seguintes necessários;
+ 	+ os interpreta, usando-os para configurar seus atributos;
+ 	+ e retornam o próprio objeto já configurados.
+ - isso permite a chamada sequencial dos métodos de leitura caso haja subsestruturas no objeto.
+
+PAT e PMT:
+ - como é necessário a leitura de um Header de 4 bytes para decidir do que se trata o pacote, as classes PAT e PMT não tiveram seus métodos read() implementados, pois disso poderiam decorrer erros de interpretação.
+ 	Estas classes se limitaram a ser estruturas que armazenam os dados lidos e estruturados pelas demais facilitando o controle da saída.
+
+"equals()":
+ - todas as classes de descriptorsPMT e de estruturasPATePMT possuem um método equals() sobreescrito específico que:
+ 	+ que avalia se há diferenças de atributos entre si e o objeto de mesma classe com exceção do continuity_conter. Também será chamado sequencialmente se houver um ou mais subsestrutura no objeto.
+
+Estruturas que não são padrões (tamanho >= 0):
+	- PAT
+		+ nos pacotes PAT, há uma subseção de tamanho variável contendo informações sobre o PID de uma network ou de um PMT. Na saída, essas informações se localizam depois de "Last_section_number" e antes de "Section_CRC" e, no arquivo, por "ArrayList<PAT_SecaoN> elementosSecaoN".
+	- PMT
+		+ nos pacotes PMT, há duas subseções de tamanho variável. Esse grupo foi chamado, na saída, de "Program info" e de "Extensão de info", respectivamente. Na classe PMT_Body, "Program info" é representado por "ArrayList<Descriptor> descriptorsN" e "Extensão de info", por "ArrayList<PMT_SecaoN1> secao_descriptorsN1".
+		+ a classe PMT_SecaoN1 contém informações sobre o tipo de Stream e uma outra lista de "descriptor" representado, na saída, por "Lista de Descriptors" e, na classe, por "ArrayList<Descriptor> listaDescriptor."
