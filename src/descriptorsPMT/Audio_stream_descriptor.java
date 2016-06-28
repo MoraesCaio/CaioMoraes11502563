@@ -8,10 +8,12 @@ public class Audio_stream_descriptor extends Descriptor {
 	public Audio_stream_descriptor(){
 		setDescriptor_tag(3);
 	}
-		
+	public Audio_stream_descriptor(int descriptor_tag, int descriptor_length){
+		setDescriptor_tag(descriptor_tag);
+		setDescriptor_length(descriptor_length);
+	}
 	public Audio_stream_descriptor read(FileInputStream fi){
 		try{
-			super.read(fi);
 			int xbyte1 = fi.read();
 			setFree_format_flag(br.intExtrairBit(xbyte1, 8));
 			setID(br.intExtrairBit(xbyte1, 7));

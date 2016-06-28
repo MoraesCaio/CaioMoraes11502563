@@ -7,10 +7,13 @@ public class IOD_descriptor extends Descriptor {
 	public IOD_descriptor(){
 		setDescriptor_tag(29);
 	}
+	public IOD_descriptor(int descriptor_tag, int descriptor_length){
+		setDescriptor_tag(descriptor_tag);
+		setDescriptor_length(descriptor_length);
+	}
 
 	public IOD_descriptor read(FileInputStream fi){
 		try{
-			super.read(fi);
 			setScope_of_IOD_label(fi.read());
 			setIOD_label(fi.read());
 			setInitialObjectDescriptor(fi.read());

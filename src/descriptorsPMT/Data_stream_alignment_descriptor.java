@@ -8,9 +8,12 @@ public class Data_stream_alignment_descriptor extends Descriptor {
 	public Data_stream_alignment_descriptor(){
 		setDescriptor_tag(6);
 	}
+	public Data_stream_alignment_descriptor(int descriptor_tag, int descriptor_length){
+		setDescriptor_tag(descriptor_tag);
+		setDescriptor_length(descriptor_length);
+	}
 	public Data_stream_alignment_descriptor read(FileInputStream fi){
 		try{
-			super.read(fi);
 			setAlignment_type(fi.read());
 		}catch(IOException e){
 			e.printStackTrace();

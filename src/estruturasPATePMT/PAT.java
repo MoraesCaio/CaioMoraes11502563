@@ -35,9 +35,9 @@ public class PAT {
 	public String toString(){
 		String s = "";
 		s += "PAT Packet\n\n";
-		s += "Header:\n" + header+"\n";
-		s += "\nAdaptation Field:\n" + adaptation_field+"\n";
-		s += "\nBody:\n" + body+"\n";
+		s += "HEADER\n" + header+"\n";
+		s += "\nADAPTATION FIELD\n" + adaptation_field+"\n";
+		s += "\nBODY\n" + body+"\n";
 		return s;
 	}
 	public boolean equals(Object obj) {

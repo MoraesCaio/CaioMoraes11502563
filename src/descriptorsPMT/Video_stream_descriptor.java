@@ -8,10 +8,12 @@ public class Video_stream_descriptor extends Descriptor {
 	public Video_stream_descriptor(){
 		setDescriptor_tag(2);
 	}
-
+	public Video_stream_descriptor(int descriptor_tag, int descriptor_length){
+		setDescriptor_tag(descriptor_tag);
+		setDescriptor_length(descriptor_length);
+	}
 	public Video_stream_descriptor read(FileInputStream fi){
 		try{
-			super.read(fi);
 			int xbyte1 = fi.read();
 			setMultiple_frame_rate_flag(br.intExtrairBit(xbyte1,8));
 			setMPEG1_only_flag(br.intExtrairBit(xbyte1,3));

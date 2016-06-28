@@ -7,9 +7,12 @@ public class FmxBufferSize_descriptor extends Descriptor {
 	public FmxBufferSize_descriptor(){
 		setDescriptor_tag(34);
 	}
+	public FmxBufferSize_descriptor(int descriptor_tag, int descriptor_length){
+		setDescriptor_tag(descriptor_tag);
+		setDescriptor_length(descriptor_length);
+	}
 
 	public FmxBufferSize_descriptor read(FileInputStream fi){
-		super.read(fi);
 		return this;
 	}
 

@@ -55,8 +55,12 @@ public class FMC_descriptor extends Descriptor {
 		setDescriptor_tag(31);
 	}
 
+	public FMC_descriptor(int descriptor_tag, int descriptor_length){
+		setDescriptor_tag(descriptor_tag);
+		setDescriptor_length(descriptor_length);
+	}
+
 	public FMC_descriptor read(FileInputStream fi){
-		super.read(fi);
 		for(int i = 0; i < descriptor_length; i += 3){
 			Unidade u = new Unidade();
 			setUnidadesDeInfo(u.read(fi));

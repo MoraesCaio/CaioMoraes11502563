@@ -7,9 +7,11 @@ public class Muxcode_descriptor extends Descriptor {
 	public Muxcode_descriptor(){
 		setDescriptor_tag(33);
 	}
-
+	public Muxcode_descriptor(int descriptor_tag, int descriptor_length){
+		setDescriptor_tag(descriptor_tag);
+		setDescriptor_length(descriptor_length);
+	}
 	public Muxcode_descriptor read(FileInputStream fi){
-		super.read(fi);
 		return this;
 	}
 

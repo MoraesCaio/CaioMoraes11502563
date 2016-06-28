@@ -7,10 +7,12 @@ public class Hierarchy_descriptor extends Descriptor {
 	public Hierarchy_descriptor(){
 		setDescriptor_tag(4);
 	}
-	
+	public Hierarchy_descriptor(int descriptor_tag, int descriptor_length){
+		setDescriptor_tag(descriptor_tag);
+		setDescriptor_length(descriptor_length);
+	}
 	public Hierarchy_descriptor read(FileInputStream fi){
 		try{
-			super.read(fi);
 			int xbyte1 = fi.read();
 			xbyte1 = br.intZerarBits(xbyte1, 28, 32);
 			setHierarchy_type(xbyte1);

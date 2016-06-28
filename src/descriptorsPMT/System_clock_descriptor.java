@@ -8,10 +8,13 @@ public class System_clock_descriptor extends Descriptor {
 	public System_clock_descriptor(){
 		setDescriptor_tag(11);
 	}
+	public System_clock_descriptor(int descriptor_tag, int descriptor_length){
+		setDescriptor_tag(descriptor_tag);
+		setDescriptor_length(descriptor_length);
+	}
 
 	public System_clock_descriptor read(FileInputStream fi){
 		try{
-			super.read(fi);
 			int xbyte1 = fi.read();
 			setExternal_clock_reference_indicator(br.intExtrairBit(xbyte1, 8));
 			xbyte1 = br.intZerarBits(xbyte1, 26, 32);

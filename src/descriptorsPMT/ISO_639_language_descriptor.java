@@ -59,9 +59,12 @@ public class ISO_639_language_descriptor extends Descriptor {
 	public ISO_639_language_descriptor(){
 		setDescriptor_tag(10);
 	}
+	public ISO_639_language_descriptor(int descriptor_tag, int descriptor_length){
+		setDescriptor_tag(descriptor_tag);
+		setDescriptor_length(descriptor_length);
+	}
 
 	public ISO_639_language_descriptor read(FileInputStream fi){
-		super.read(fi);
 		for(int i = 0; i < descriptor_length; i += 3){
 			Unidade u = new Unidade();
 			setUnidadesDeInfo(u.read(fi));

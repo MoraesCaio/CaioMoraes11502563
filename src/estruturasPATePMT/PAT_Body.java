@@ -199,10 +199,12 @@ public class PAT_Body {
 		s += "Current_next_indicator: "+br.intBinaryString(current_next_indicator,31)+"\n";
 		s += "Section_number: "+br.intBinaryString(section_number,24)+"\n";
 		s += "Last_section_number: "+br.intBinaryString(last_section_number,24)+"\n";
+		s += "PID\n";
 		for(PAT_SecaoN n : elementosSecaoN){
 			s += n;
 		}
 		s += "Section_CRC: "+br.intBinaryString(section_CRC)+" = "+	String.format("%x", section_CRC) + "\n";
+		s += "-----------------------------------------------------------------";
 		return s;
 	}
 	public boolean equals(Object obj) {

@@ -8,10 +8,13 @@ public class SL_descriptor extends Descriptor {
 	public SL_descriptor(){
 		setDescriptor_tag(30);
 	}
+	public SL_descriptor(int descriptor_tag, int descriptor_length){
+		setDescriptor_tag(descriptor_tag);
+		setDescriptor_length(descriptor_length);
+	}
 
 	public SL_descriptor read(FileInputStream fi){
 		try{
-			super.read(fi);
 			int xbyte1 = fi.read();
 			int xbyte2 = fi.read();
 			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
