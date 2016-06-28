@@ -95,12 +95,11 @@ public class TS_Reader {
 			//É necessário nova instância para que o arrayList resete
 			//	isso diminui a quantidade de texto escrita no arquivo.
 			while(fi.available() > 0){
-			//for(int i = 0; i < 40; i++){
+			//for(int i = 0; i < 50000; i++){
 				tempHeader = new TS_Header();
 				tempHeader.read(fi);
-				//bw.write("cabeçalho número "+(i+1)+"\n"+tempHeader+"\n");
 				if(tempHeader.getPID() == 0){
-					//listaPATWriter.write("\nEsse packet é um PAT!\n\n");
+					listaPATWriter.write("\ni\n");
 					number_PAT++;
 					//leitura
 					tempAF = new AdaptationField();
@@ -123,14 +122,13 @@ public class TS_Reader {
 					listaPATWriter.write(""+tempPAT);
 					//salvando se for diferente
 					if(!previousPAT.equals(tempPAT)){
-						System.out.println("rolou a segunda avaliação");
 						previousPAT = tempPAT;
 						semRep_listaPAT.add(tempPAT);
 					}
 					//quantos bytes faltam: tamanhoTS -header-adapField-3-section
 					pularBytes(188-(4+(1+tempAF.getAdaptation_field_length())+(3+tempPATBody.getSection_length())));
 				}else if(PMT_PID.contains(tempHeader.getPID())){
-					//listaPMTWriter.write("\nEsse packet é um PMT!\n\n");
+					listaPMTWriter.write("\ni\n");
 					number_PMT++;
 					//leitura
 					tempAF = new AdaptationField();

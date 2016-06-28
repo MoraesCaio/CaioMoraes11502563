@@ -47,7 +47,7 @@ public class PMT_Body {
 			for(int i = 0; i < program_info_length;){
 				tempDescriptor = new Descriptor();
 				setDescriptorsN(tempDescriptor.read(fi));
-				i += 1 + tempDescriptor.getDescriptor_length();
+				i += 2 + tempDescriptor.getDescriptor_length();
 			}
 			//desN1
 			for(int i = 0; i < tamanhoSecaoN1;){

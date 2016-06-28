@@ -116,6 +116,9 @@ public class Descriptor {
 					d35.read(fi);
 					return d35;
 				default:
+					for(int i = 0; i < descriptor_length; i++){
+						fi.read();
+					}
 			}
 		}catch(IOException e){
 			e.printStackTrace();
