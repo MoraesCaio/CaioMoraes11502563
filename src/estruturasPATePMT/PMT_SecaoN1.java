@@ -27,7 +27,7 @@ public class PMT_SecaoN1 {
 			for(int i = 0; i < ES_info_length;){
 				tempDescriptor = new Descriptor();
 				setListaDescriptor(tempDescriptor.read(fi));
-				i += 1 + tempDescriptor.getDescriptor_length();
+				i += 2 + tempDescriptor.getDescriptor_length();
 			}
 		}catch(IOException e){
 			e.printStackTrace();
