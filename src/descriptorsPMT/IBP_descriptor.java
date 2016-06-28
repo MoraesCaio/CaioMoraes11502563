@@ -7,10 +7,13 @@ public class IBP_descriptor extends Descriptor{
 	public IBP_descriptor(){
 		setDescriptor_tag(18);
 	}
+	public IBP_descriptor(int descriptor_tag, int descriptor_length){
+		setDescriptor_tag(descriptor_tag);
+		setDescriptor_length(descriptor_length);
+	}
 
 	public IBP_descriptor read(FileInputStream fi){
 		try{
-			super.read(fi);
 			int xbyte1;
 			int xbyte2;
 			xbyte1 = fi.read();

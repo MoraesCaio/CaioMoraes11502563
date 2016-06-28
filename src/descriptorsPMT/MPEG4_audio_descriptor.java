@@ -7,10 +7,12 @@ public class MPEG4_audio_descriptor extends Descriptor {
 	public MPEG4_audio_descriptor(){
 		setDescriptor_tag(28);
 	}
-
+	public MPEG4_audio_descriptor(int descriptor_tag, int descriptor_length){
+		setDescriptor_tag(descriptor_tag);
+		setDescriptor_length(descriptor_length);
+	}
 	public MPEG4_audio_descriptor read(FileInputStream fi){
 		try{
-			super.read(fi);
 			setMPEG4_audio_profile_and_level(fi.read());
 		}catch(IOException e){
 			e.printStackTrace();

@@ -486,7 +486,7 @@ public class AdaptationField {
 		aux = aux << 15;
 		aux = aux | br.intZerarBits(DTS_next_AU3, 17, 32);
 		s += "DTS_next_AU: "+br.intBinaryString(aux)+"\n";
-		s += "Number of reserved bytes at the end of Adaptation Field Extension: "+reserved5.size()+"\n";
+		s += "Number of reserved bytes at the end of Adaptation Field Extension: "+reserved5.size();
 		return s;
 	}
 	public boolean equals(Object obj) {

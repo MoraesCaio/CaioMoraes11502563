@@ -7,10 +7,12 @@ public class External_ES_ID_descriptor extends Descriptor {
 	public External_ES_ID_descriptor(){
 		setDescriptor_tag(32);
 	}
-
+	public External_ES_ID_descriptor(int descriptor_tag, int descriptor_length){
+		setDescriptor_tag(descriptor_tag);
+		setDescriptor_length(descriptor_length);
+	}
 	public External_ES_ID_descriptor read(FileInputStream fi){
 		try{
-			super.read(fi);
 			int xbyte1 = fi.read();
 			int xbyte2 = fi.read();
 			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);

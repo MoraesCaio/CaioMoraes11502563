@@ -7,10 +7,12 @@ public class MPEG4_video_descriptor extends Descriptor{
 	public MPEG4_video_descriptor(){
 		setDescriptor_tag(27);
 	}
-
+	public MPEG4_video_descriptor(int descriptor_tag, int descriptor_length){
+		setDescriptor_tag(descriptor_tag);
+		setDescriptor_length(descriptor_length);
+	}
 	public MPEG4_video_descriptor read(FileInputStream fi){
 		try{
-			super.read(fi);
 			setMPEG4_visual_profile_and_level(fi.read());
 		}catch(IOException e){
 			e.printStackTrace();

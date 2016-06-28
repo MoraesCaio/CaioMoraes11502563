@@ -7,10 +7,12 @@ public class STD_descriptor extends Descriptor {
 	public STD_descriptor(){
 		setDescriptor_tag(17);
 	}
-
+	public STD_descriptor(int descriptor_tag, int descriptor_length){
+		setDescriptor_tag(descriptor_tag);
+		setDescriptor_length(descriptor_length);
+	}
 	public STD_descriptor read(FileInputStream fi){
 		try{
-			super.read(fi);
 			int xbyte1 = fi.read();
 			xbyte1 = br.intExtrairBit(xbyte1,1);
 			setLeak_valid_flag(xbyte1);

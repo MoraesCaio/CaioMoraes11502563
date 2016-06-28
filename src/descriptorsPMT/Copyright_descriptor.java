@@ -9,10 +9,12 @@ public class Copyright_descriptor extends Descriptor {
 	public Copyright_descriptor(){
 		setDescriptor_tag(13);
 	}
-
+	public Copyright_descriptor(int descriptor_tag, int descriptor_length){
+		setDescriptor_tag(descriptor_tag);
+		setDescriptor_length(descriptor_length);
+	}
 	public Copyright_descriptor read(FileInputStream fi){
 		try{
-			super.read(fi);
 			int xbyte1;
 			int xbyte2;
 			xbyte1 = fi.read();

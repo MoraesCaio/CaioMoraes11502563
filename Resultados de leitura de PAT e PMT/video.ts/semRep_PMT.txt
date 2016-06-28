@@ -5,7 +5,7 @@ Quantidade encontrada de pacotes PMT não repetidos:	1
 
 PMT Packet
 
-Header:
+HEADER
 sync_byte: *0100.0111* = 71
 transport_error_indicator: *0*
 payload_unit_start_indicator: *1*
@@ -15,7 +15,7 @@ transport_scrambling_control: *00*
 adaptation_field_control: *01*
 continuity_counter: *0000*
 
-Adaptation Field:
+ADAPTATION FIELD
 Adaptation_field_length: *0000.0000*
 Discontinuity_indicator: *0*
 Random_access_indicator: *0*
@@ -43,8 +43,7 @@ Splice_type: *0000*
 DTS_next_AU: *0000.0000/0000.0000/0000.0000/0000.0000*
 Number of reserved bytes at the end of Adaptation Field Extension: 0
 
-
-Body:
+BODY
 Table_id: *0000.0010* = 2
 Section_syntax_indicator: *1*
 Section_length: *0000/0001.0111* = 23
@@ -56,9 +55,10 @@ Last_section_number: *0000.0000*
 PCR_PID: *0.0001/1110.0001* = 57825
 Program_info_length: *0000/0000.0000* = 0
 
-Program Info:
+PROGRAM INFO
 
-Extensão de info:
+Fim de Program info
+EXTENSÃO DE INFO
 
 Stream_type: *0001.1011*
 Elementary_PID: *0.0001/1110.0001*
@@ -74,4 +74,4 @@ Lista de Descriptors:
 
 Fim da lista de Descriptors.
 CRC_32: *1011.1101/1011.0000/0101.1001/1001.0011* = bdb05993
-
+------------------------------------------------------------

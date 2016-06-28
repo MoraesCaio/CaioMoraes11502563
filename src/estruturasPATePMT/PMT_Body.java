@@ -181,15 +181,17 @@ public class PMT_Body {
 		s += "Last_section_number: "+br.intBinaryString(last_section_number,24)+"\n";
 		s += "PCR_PID: "+br.intBinaryString(PCR_PID,19)+" = "+PCR_PID+"\n";
 		s += "Program_info_length: "+br.intBinaryString(program_info_length,20)+" = "+program_info_length+"\n";
-		s += "\nProgram Info:\n\n";
+		s += "\nPROGRAM INFO\n\n";
 		for(Descriptor d : descriptorsN){
 			s += d+"\n";
 		}
-		s += "Extensão de info:\n";
+		s += "Fim de Program info\n";
+		s += "EXTENSÃO DE INFO\n";
 		for(PMT_SecaoN1 n1 : secao_descriptorsN1){
 			s += n1;
 		}
 		s += "CRC_32: "+br.intBinaryString(CRC_32)+" = "+String.format("%x", CRC_32)+"\n";
+		s += "------------------------------------------------------------";
 		return s;
 	}
 

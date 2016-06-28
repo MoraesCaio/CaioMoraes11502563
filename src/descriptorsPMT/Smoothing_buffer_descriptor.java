@@ -7,10 +7,12 @@ public class Smoothing_buffer_descriptor extends Descriptor {
 	public Smoothing_buffer_descriptor(){
 		setDescriptor_tag(16);
 	}
-
+	public Smoothing_buffer_descriptor(int descriptor_tag, int descriptor_length){
+		setDescriptor_tag(descriptor_tag);
+		setDescriptor_length(descriptor_length);
+	}
 	public Smoothing_buffer_descriptor read(FileInputStream fi){
 		try{
-			super.read(fi);
 			int xbyte1;
 			int xbyte2;
 			xbyte1 = fi.read();

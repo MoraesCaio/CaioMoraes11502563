@@ -9,10 +9,13 @@ public class CA_descriptor extends Descriptor {
 	public CA_descriptor(){
 		setDescriptor_tag(9);
 	}
+	public CA_descriptor(int descriptor_tag, int descriptor_length){
+		setDescriptor_tag(descriptor_tag);
+		setDescriptor_length(descriptor_length);
+	}
 
 	public CA_descriptor read(FileInputStream fi){
 		try{
-			super.read(fi);
 			int xbyte1 = fi.read();
 			int xbyte2 = fi.read();
 			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);

@@ -8,10 +8,12 @@ public class Target_background_grid_descriptor extends Descriptor {
 	public Target_background_grid_descriptor(){
 		setDescriptor_tag(7);
 	}
-	int qtdBytes = 2+4;
+	public Target_background_grid_descriptor(int descriptor_tag, int descriptor_length){
+		setDescriptor_tag(descriptor_tag);
+		setDescriptor_length(descriptor_length);
+	}
 	public Target_background_grid_descriptor read(FileInputStream fi){
 		try{
-			super.read(fi);
 			int xbyte1 = fi.read();
 			int xbyte2 = fi.read();
 			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
