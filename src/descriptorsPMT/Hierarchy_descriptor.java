@@ -12,22 +12,10 @@ public class Hierarchy_descriptor extends Descriptor {
 		setDescriptor_length(descriptor_length);
 	}
 	public Hierarchy_descriptor read(FileInputStream fi){
-		try{
-			int xbyte1 = fi.read();
-			xbyte1 = br.intZerarBits(xbyte1, 28, 32);
-			setHierarchy_type(xbyte1);
-			xbyte1 = fi.read();
-			xbyte1 = br.intZerarBits(xbyte1, 26, 32);
-			setHierarchy_layer_index(xbyte1);
-			xbyte1 = fi.read();
-			xbyte1 = br.intZerarBits(xbyte1, 26, 32);
-			setHierarchy_embedded_layer_index(xbyte1);
-			xbyte1 = fi.read();
-			xbyte1 = br.intZerarBits(xbyte1, 26, 32);
-			setHierarchy_channel(xbyte1);
-		}catch(IOException e){
-			e.printStackTrace();
-		}
+		setHierarchy_type(br.zerarBits(br.lerBytes(fi, 1), 28));
+		setHierarchy_layer_index(br.zerarBits(br.lerBytes(fi, 1), 26));
+		setHierarchy_embedded_layer_index(br.zerarBits(br.lerBytes(fi, 1), 26));
+		setHierarchy_channel(br.zerarBits(br.lerBytes(fi, 1), 26));
 		return this;
 	}
 	private int hierarchy_type;
@@ -64,10 +52,10 @@ public class Hierarchy_descriptor extends Descriptor {
 
 	public String toString(){
 		String s = super.toString();
-		s += "Hierarchy_type: "+br.intBinaryString(hierarchy_type,28)+"\n";
-		s += "Hierarchy_layer_index: "+br.intBinaryString(hierarchy_layer_index,26)+"\n";
-		s += "Hierarchy_embedded_layer_index: "+br.intBinaryString(hierarchy_embedded_layer_index,26)+"\n";
-		s += "Hierarchy_channel: "+br.intBinaryString(hierarchy_channel,26)+"\n";
+		s += "Hierarchy_type: "+br.binaryString(hierarchy_type,28)+"\n";
+		s += "Hierarchy_layer_index: "+br.binaryString(hierarchy_layer_index,26)+"\n";
+		s += "Hierarchy_embedded_layer_index: "+br.binaryString(hierarchy_embedded_layer_index,26)+"\n";
+		s += "Hierarchy_channel: "+br.binaryString(hierarchy_channel,26)+"\n";
 		return s;
 	}
 	public boolean equals(Object obj) {

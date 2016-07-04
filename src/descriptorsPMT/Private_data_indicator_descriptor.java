@@ -12,21 +12,7 @@ public class Private_data_indicator_descriptor extends Descriptor{
 		setDescriptor_length(descriptor_length);
 	}
 	public Private_data_indicator_descriptor read(FileInputStream fi){
-		try{
-			int xbyte1;
-			int xbyte2;
-			xbyte1 = fi.read();
-			xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			setPrivate_data_indicator(xbyte1);
-
-		}catch(IOException e){
-			e.printStackTrace();
-		}
+		setPrivate_data_indicator(br.lerBytes(fi, 4));
 		return this;
 	}
 	private int private_data_indicator;
@@ -38,7 +24,7 @@ public class Private_data_indicator_descriptor extends Descriptor{
 	}
 	public String toString(){
 		String s = super.toString();
-		s += "Private_data_indicator: "+br.intBinaryString(private_data_indicator)+"\n";
+		s += "Private_data_indicator: "+br.binaryString(private_data_indicator)+"\n";
 		return s;
 	}
 	public boolean equals(Object obj) {

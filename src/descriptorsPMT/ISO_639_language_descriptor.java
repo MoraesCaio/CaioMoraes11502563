@@ -9,17 +9,8 @@ public class ISO_639_language_descriptor extends Descriptor {
 	private class Unidade{
 		
 		private Unidade read(FileInputStream fi){
-			try{
-				int xbyte1 = fi.read();
-				int xbyte2 = fi.read();
-				xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-				xbyte2 = fi.read();
-				xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-				setISO_639_language_code(xbyte1);
-				setAudio_type(fi.read());
-			}catch(IOException e){
-				e.printStackTrace();
-			}
+			setISO_639_language_code(br.lerBytes(fi, 3));
+			setAudio_type(br.lerBytes(fi, 1));
 			return this;
 		}
 
@@ -39,8 +30,8 @@ public class ISO_639_language_descriptor extends Descriptor {
 		}
 		public String toString(){
 			String s = super.toString();
-			s += "ISO_639_language_code: "+br.intBinaryString(ISO_639_language_code,8)+"\n";
-			s += "Audio_type: "+br.intBinaryString(audio_type,24)+"\n";
+			s += "ISO_639_language_code: "+br.binaryString(ISO_639_language_code,8)+"\n";
+			s += "Audio_type: "+br.binaryString(audio_type,24)+"\n";
 			return s;
 		}
 

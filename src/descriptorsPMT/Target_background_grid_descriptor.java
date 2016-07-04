@@ -13,25 +13,16 @@ public class Target_background_grid_descriptor extends Descriptor {
 		setDescriptor_length(descriptor_length);
 	}
 	public Target_background_grid_descriptor read(FileInputStream fi){
-		try{
-			int xbyte1 = fi.read();
-			int xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			xbyte1 = xbyte1 >> 2;
-			setHorizontal_size(xbyte1);
-			xbyte2 = br.intZerarBits(xbyte2, 30, 32);
-			xbyte1 = xbyte2;
-			xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			xbyte1 = xbyte1 >> 4;
-			setVertical_size(xbyte1);
-			xbyte2 = br.intZerarBits(xbyte2, 28, 32);
-			setAspect_ratio_information(xbyte2);
-		}catch(IOException e){
-			e.printStackTrace();
-		}
+		int xbyte1;
+		int xbyte2;
+		xbyte1 = br.lerBytes(fi, 2);
+		xbyte2 = xbyte1 >> 2;
+		setHorizontal_size(xbyte2);
+		xbyte1 = br.zerarBits(xbyte1, 30);
+		xbyte1 = br.shiftAndAddByte(xbyte1, br.lerBytes(fi, 2));
+		xbyte2 = xbyte1 >> 4;
+		setVertical_size(xbyte2);
+		setAspect_ratio_information(br.zerarBits(xbyte1, 28));
 		return this;
 	}
 	private int horizontal_size;
@@ -58,9 +49,9 @@ public class Target_background_grid_descriptor extends Descriptor {
 		
 	public String toString(){
 		String s = super.toString();
-		s += "Horizontal_size: "+br.intBinaryString(horizontal_size,18)+"\n";
-		s += "Vertical_size: "+br.intBinaryString(vertical_size,18)+"\n";
-		s += "Aspect_ratio_information: "+br.intBinaryString(aspect_ratio_information,28)+"\n";
+		s += "Horizontal_size: "+br.binaryString(horizontal_size,18)+"\n";
+		s += "Vertical_size: "+br.binaryString(vertical_size,18)+"\n";
+		s += "Aspect_ratio_information: "+br.binaryString(aspect_ratio_information,28)+"\n";
 		return s;
 	}
 	public boolean equals(Object obj) {

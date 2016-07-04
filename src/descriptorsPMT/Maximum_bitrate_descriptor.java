@@ -13,17 +13,7 @@ public class Maximum_bitrate_descriptor extends Descriptor {
 	}
 
 	public Maximum_bitrate_descriptor read(FileInputStream fi){
-		try{
-			int xbyte1 = fi.read();
-			int xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			xbyte1 = br.intZerarBits(xbyte1, 10, 32);
-			setMaximum_bitrate(xbyte1);
-		}catch(IOException e){
-			e.printStackTrace();
-		}
+		setMaximum_bitrate(br.zerarBits(br.lerBytes(fi, 3), 10));
 		return this;
 	}
 	private int maximum_bitrate;
@@ -35,7 +25,7 @@ public class Maximum_bitrate_descriptor extends Descriptor {
 	}
 	public String toString(){
 		String s = super.toString();
-		s += "Maximum_bitrate: "+br.intBinaryString(maximum_bitrate,10)+"\n";
+		s += "Maximum_bitrate: "+br.binaryString(maximum_bitrate,10)+"\n";
 		return s;
 	}
 	public boolean equals(Object obj) {

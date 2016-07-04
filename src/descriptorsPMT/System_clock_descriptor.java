@@ -14,18 +14,13 @@ public class System_clock_descriptor extends Descriptor {
 	}
 
 	public System_clock_descriptor read(FileInputStream fi){
-		try{
-			int xbyte1 = fi.read();
-			setExternal_clock_reference_indicator(br.intExtrairBit(xbyte1, 8));
-			xbyte1 = br.intZerarBits(xbyte1, 26, 32);
-			setClock_accuracy_integer(xbyte1);
-			xbyte1 = fi.read();
-			xbyte1 = xbyte1 >> 5;
-			xbyte1 = br.intZerarBits(xbyte1, 29, 32);
-			setClock_accuracy_exponent(xbyte1);
-		}catch(IOException e){
-			e.printStackTrace();
-		}
+		int xbyte1 = br.lerBytes(fi, 1);
+		setExternal_clock_reference_indicator(br.extrairBit(xbyte1, 8));
+		setClock_accuracy_integer(br.zerarBits(xbyte1, 26));
+		xbyte1 = br.lerBytes(fi, 1);
+		xbyte1 = xbyte1 >> 5;
+		xbyte1 = br.zerarBits(xbyte1, 29);
+		setClock_accuracy_exponent(xbyte1);
 		return this;
 	}
 	private int external_clock_reference_indicator;
@@ -51,9 +46,9 @@ public class System_clock_descriptor extends Descriptor {
 	}
 	public String toString(){
 		String s = super.toString();
-		s += "External_clock_reference_indicator: "+br.intBinaryString(external_clock_reference_indicator,31)+"\n";
-		s += "Clock_accuracy_integer: "+br.intBinaryString(clock_accuracy_integer,26)+"\n";
-		s += "Clock_accuracy_exponent: "+br.intBinaryString(clock_accuracy_exponent,29)+"\n";
+		s += "External_clock_reference_indicator: "+br.binaryString(external_clock_reference_indicator,31)+"\n";
+		s += "Clock_accuracy_integer: "+br.binaryString(clock_accuracy_integer,26)+"\n";
+		s += "Clock_accuracy_exponent: "+br.binaryString(clock_accuracy_exponent,29)+"\n";
 		return s;
 	}
 	public boolean equals(Object obj) {

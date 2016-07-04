@@ -7,121 +7,115 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 public class Descriptor {
 	ByteReader br = new ByteReader();
 	public Descriptor read(FileInputStream fi){
-		try{
-			setDescriptor_tag(fi.read());
-			setDescriptor_length(fi.read());
-			switch(this.descriptor_tag){
-				case 2:
-					Video_stream_descriptor d2 = new Video_stream_descriptor(descriptor_tag, descriptor_length);
-					d2.read(fi);
-					return d2;
-				case 3:
-					Audio_stream_descriptor d3 = new Audio_stream_descriptor(descriptor_tag, descriptor_length);
-					d3.read(fi);
-					return d3;
-				case 4:
-					Hierarchy_descriptor d4 = new Hierarchy_descriptor(descriptor_tag, descriptor_length);
-					d4.read(fi);
-					return d4;
-				case 5:
-					Registration_descriptor d5 = new Registration_descriptor(descriptor_tag, descriptor_length);
-					d5.read(fi);
-					return d5;
-				case 6:
-					Data_stream_alignment_descriptor d6 = new Data_stream_alignment_descriptor(descriptor_tag, descriptor_length);
-					d6.read(fi);
-					return d6;
-				case 7:
-					Target_background_grid_descriptor d7 = new Target_background_grid_descriptor(descriptor_tag, descriptor_length);
-					d7.read(fi);
-					return d7;
-				case 8:
-					Video_window_descriptor d8 = new Video_window_descriptor(descriptor_tag, descriptor_length);
-					d8.read(fi);
-					return d8;
-				case 9:
-					CA_descriptor d9 = new CA_descriptor(descriptor_tag, descriptor_length);
-					d9.read(fi);
-					return d9;
-				case 10:
-					ISO_639_language_descriptor d10 = new ISO_639_language_descriptor(descriptor_tag, descriptor_length);
-					d10.read(fi);
-					return d10;
-				case 11:
-					System_clock_descriptor d11 = new System_clock_descriptor(descriptor_tag, descriptor_length);
-					d11.read(fi);
-					return d11;
-				case 12:
-					Multiplex_buffer_utilization_descriptor d12 = new Multiplex_buffer_utilization_descriptor(descriptor_tag, descriptor_length);
-					d12.read(fi);
-					return d12;
-				case 13:
-					Copyright_descriptor d13 = new Copyright_descriptor(descriptor_tag, descriptor_length);
-					d13.read(fi);
-					return d13;
-				case 14:
-					Maximum_bitrate_descriptor d14 = new Maximum_bitrate_descriptor(descriptor_tag, descriptor_length);
-					d14.read(fi);
-					return d14;
-				case 15:
-					Private_data_indicator_descriptor d15 = new Private_data_indicator_descriptor(descriptor_tag, descriptor_length);
-					d15.read(fi);
-					return d15;
-				case 16:
-					Smoothing_buffer_descriptor d16 = new Smoothing_buffer_descriptor(descriptor_tag, descriptor_length);
-					d16.read(fi);
-					return d16;
-				case 17:
-					STD_descriptor d17 = new STD_descriptor(descriptor_tag, descriptor_length);
-					d17.read(fi);
-					return d17;
-				case 18:
-					IBP_descriptor d18 = new IBP_descriptor(descriptor_tag, descriptor_length);
-					d18.read(fi);
-					return d18;
-				case 27:
-					MPEG4_video_descriptor d27 = new MPEG4_video_descriptor(descriptor_tag, descriptor_length);
-					d27.read(fi);
-					return d27;
-				case 28:
-					MPEG4_audio_descriptor d28 = new MPEG4_audio_descriptor(descriptor_tag, descriptor_length);
-					d28.read(fi);
-					return d28;
-				case 29:
-					IOD_descriptor d29 = new IOD_descriptor(descriptor_tag, descriptor_length);
-					d29.read(fi);
-					return d29;
-				case 30:
-					SL_descriptor d30 = new SL_descriptor(descriptor_tag, descriptor_length);
-					d30.read(fi);
-					return d30;
-				case 31:
-					FMC_descriptor d31 = new FMC_descriptor(descriptor_tag, descriptor_length);
-					d31.read(fi);
-					return d31;
-				case 32:
-					External_ES_ID_descriptor d32 = new External_ES_ID_descriptor(descriptor_tag, descriptor_length);
-					d32.read(fi);
-					return d32;
-				case 33:
-					Muxcode_descriptor d33 = new Muxcode_descriptor(descriptor_tag, descriptor_length);
-					d33.read(fi);
-					return d33;
-				case 34:
-					FmxBufferSize_descriptor d34 = new FmxBufferSize_descriptor(descriptor_tag, descriptor_length);
-					d34.read(fi);
-					return d34;
-				case 35:
-					MultiplexBuffer_descriptor d35 = new MultiplexBuffer_descriptor(descriptor_tag, descriptor_length);
-					d35.read(fi);
-					return d35;
-				default:
-					for(int i = 0; i < descriptor_length; i++){
-						fi.read();
-					}
-			}
-		}catch(IOException e){
-			e.printStackTrace();
+		setDescriptor_tag(br.lerBytes(fi, 1));
+		setDescriptor_length(br.lerBytes(fi, 1));
+		switch(this.descriptor_tag){
+			case 2:
+				Video_stream_descriptor d2 = new Video_stream_descriptor(descriptor_tag, descriptor_length);
+				d2.read(fi);
+				return d2;
+			case 3:
+				Audio_stream_descriptor d3 = new Audio_stream_descriptor(descriptor_tag, descriptor_length);
+				d3.read(fi);
+				return d3;
+			case 4:
+				Hierarchy_descriptor d4 = new Hierarchy_descriptor(descriptor_tag, descriptor_length);
+				d4.read(fi);
+				return d4;
+			case 5:
+				Registration_descriptor d5 = new Registration_descriptor(descriptor_tag, descriptor_length);
+				d5.read(fi);
+				return d5;
+			case 6:
+				Data_stream_alignment_descriptor d6 = new Data_stream_alignment_descriptor(descriptor_tag, descriptor_length);
+				d6.read(fi);
+				return d6;
+			case 7:
+				Target_background_grid_descriptor d7 = new Target_background_grid_descriptor(descriptor_tag, descriptor_length);
+				d7.read(fi);
+				return d7;
+			case 8:
+				Video_window_descriptor d8 = new Video_window_descriptor(descriptor_tag, descriptor_length);
+				d8.read(fi);
+				return d8;
+			case 9:
+				CA_descriptor d9 = new CA_descriptor(descriptor_tag, descriptor_length);
+				d9.read(fi);
+				return d9;
+			case 10:
+				ISO_639_language_descriptor d10 = new ISO_639_language_descriptor(descriptor_tag, descriptor_length);
+				d10.read(fi);
+				return d10;
+			case 11:
+				System_clock_descriptor d11 = new System_clock_descriptor(descriptor_tag, descriptor_length);
+				d11.read(fi);
+				return d11;
+			case 12:
+				Multiplex_buffer_utilization_descriptor d12 = new Multiplex_buffer_utilization_descriptor(descriptor_tag, descriptor_length);
+				d12.read(fi);
+				return d12;
+			case 13:
+				Copyright_descriptor d13 = new Copyright_descriptor(descriptor_tag, descriptor_length);
+				d13.read(fi);
+				return d13;
+			case 14:
+				Maximum_bitrate_descriptor d14 = new Maximum_bitrate_descriptor(descriptor_tag, descriptor_length);
+				d14.read(fi);
+				return d14;
+			case 15:
+				Private_data_indicator_descriptor d15 = new Private_data_indicator_descriptor(descriptor_tag, descriptor_length);
+				d15.read(fi);
+				return d15;
+			case 16:
+				Smoothing_buffer_descriptor d16 = new Smoothing_buffer_descriptor(descriptor_tag, descriptor_length);
+				d16.read(fi);
+				return d16;
+			case 17:
+				STD_descriptor d17 = new STD_descriptor(descriptor_tag, descriptor_length);
+				d17.read(fi);
+				return d17;
+			case 18:
+				IBP_descriptor d18 = new IBP_descriptor(descriptor_tag, descriptor_length);
+				d18.read(fi);
+				return d18;
+			case 27:
+				MPEG4_video_descriptor d27 = new MPEG4_video_descriptor(descriptor_tag, descriptor_length);
+				d27.read(fi);
+				return d27;
+			case 28:
+				MPEG4_audio_descriptor d28 = new MPEG4_audio_descriptor(descriptor_tag, descriptor_length);
+				d28.read(fi);
+				return d28;
+			case 29:
+				IOD_descriptor d29 = new IOD_descriptor(descriptor_tag, descriptor_length);
+				d29.read(fi);
+				return d29;
+			case 30:
+				SL_descriptor d30 = new SL_descriptor(descriptor_tag, descriptor_length);
+				d30.read(fi);
+				return d30;
+			case 31:
+				FMC_descriptor d31 = new FMC_descriptor(descriptor_tag, descriptor_length);
+				d31.read(fi);
+				return d31;
+			case 32:
+				External_ES_ID_descriptor d32 = new External_ES_ID_descriptor(descriptor_tag, descriptor_length);
+				d32.read(fi);
+				return d32;
+			case 33:
+				Muxcode_descriptor d33 = new Muxcode_descriptor(descriptor_tag, descriptor_length);
+				d33.read(fi);
+				return d33;
+			case 34:
+				FmxBufferSize_descriptor d34 = new FmxBufferSize_descriptor(descriptor_tag, descriptor_length);
+				d34.read(fi);
+				return d34;
+			case 35:
+				MultiplexBuffer_descriptor d35 = new MultiplexBuffer_descriptor(descriptor_tag, descriptor_length);
+				d35.read(fi);
+				return d35;
+			default:
+				br.lerBytes(fi, descriptor_length);
 		}
 		return this;
 	}
@@ -233,8 +227,8 @@ public class Descriptor {
 	public String toString(){
 		String s = "\n";
 		s += "Descriptor do tipo:\t"+nome_descriptor+"\n";
-		s += "Descriptor_tag: "+br.intBinaryString(descriptor_tag,24)+"\n";
-		s += "Descriptor_length: "+br.intBinaryString(descriptor_length,24)+"\n";
+		s += "Descriptor_tag: "+br.binaryString(descriptor_tag,24)+"\n";
+		s += "Descriptor_length: "+br.binaryString(descriptor_length,24)+"\n";
 		return s;
 	}
 	public boolean equals(Object obj) {

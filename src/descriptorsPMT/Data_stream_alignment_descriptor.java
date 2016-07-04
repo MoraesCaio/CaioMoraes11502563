@@ -13,11 +13,7 @@ public class Data_stream_alignment_descriptor extends Descriptor {
 		setDescriptor_length(descriptor_length);
 	}
 	public Data_stream_alignment_descriptor read(FileInputStream fi){
-		try{
-			setAlignment_type(fi.read());
-		}catch(IOException e){
-			e.printStackTrace();
-		}
+		setAlignment_type(br.lerBytes(fi, 1));
 		return this;
 	}
 	private int alignment_type;
@@ -30,7 +26,7 @@ public class Data_stream_alignment_descriptor extends Descriptor {
 
 	public String toString(){
 		String s = super.toString();
-		s += "Alignment_type: "+br.intBinaryString(alignment_type,24)+"\n";
+		s += "Alignment_type: "+br.binaryString(alignment_type,24)+"\n";
 		return s;
 	}
 	public boolean equals(Object obj) {

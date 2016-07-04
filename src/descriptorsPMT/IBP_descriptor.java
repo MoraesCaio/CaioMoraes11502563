@@ -13,21 +13,10 @@ public class IBP_descriptor extends Descriptor{
 	}
 
 	public IBP_descriptor read(FileInputStream fi){
-		try{
-			int xbyte1;
-			int xbyte2;
-			xbyte1 = fi.read();
-			xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			xbyte2 = br.intExtrairBit(xbyte1,16);
-			setClosed_gop_flag(xbyte2);
-			xbyte2 = br.intExtrairBit(xbyte1,15);
-			setIdentical_gop_flag(xbyte2);
-			xbyte1 = br.intZerarBits(xbyte1, 18, 32);
-			setMax_gop_length(xbyte1);
-		}catch(IOException e){
-			e.printStackTrace();
-		}
+		int xbyte1 = br.lerBytes(fi, 2);
+		setClosed_gop_flag(br.extrairBit(xbyte1,16));
+		setIdentical_gop_flag(br.extrairBit(xbyte1,15));
+		setMax_gop_length(br.zerarBits(xbyte1, 18));
 		return this;
 	}
 	private int closed_gop_flag;
@@ -53,9 +42,9 @@ public class IBP_descriptor extends Descriptor{
 	}
 	public String toString(){
 		String s = super.toString();
-		s += "Closed_gop_flag: "+br.intBinaryString(closed_gop_flag,31)+"\n";
-		s += "Identical_gop_flag: "+br.intBinaryString(identical_gop_flag,31)+"\n";
-		s += "Max_gop_length: "+br.intBinaryString(max_gop_length,18)+"\n";
+		s += "Closed_gop_flag: "+br.binaryString(closed_gop_flag,31)+"\n";
+		s += "Identical_gop_flag: "+br.binaryString(identical_gop_flag,31)+"\n";
+		s += "Max_gop_length: "+br.binaryString(max_gop_length,18)+"\n";
 		return s;
 	}
 	public boolean equals(Object obj) {

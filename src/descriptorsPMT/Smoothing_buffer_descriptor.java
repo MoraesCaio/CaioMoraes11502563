@@ -12,27 +12,8 @@ public class Smoothing_buffer_descriptor extends Descriptor {
 		setDescriptor_length(descriptor_length);
 	}
 	public Smoothing_buffer_descriptor read(FileInputStream fi){
-		try{
-			int xbyte1;
-			int xbyte2;
-			xbyte1 = fi.read();
-			xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			xbyte1 = br.intZerarBits(xbyte1, 10, 32);
-			setSb_leak_rate(xbyte1);
-			xbyte1 = fi.read();
-			xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			xbyte1 = br.intZerarBits(xbyte1, 10, 32);
-			setSb_size(xbyte1);
-
-		}catch(IOException e){
-			e.printStackTrace();
-		}
+		setSb_leak_rate(br.zerarBits(br.lerBytes(fi, 3), 10));
+		setSb_size(br.zerarBits(br.lerBytes(fi, 3), 10));
 		return this;
 	}
 	private int sb_leak_rate;
@@ -51,8 +32,8 @@ public class Smoothing_buffer_descriptor extends Descriptor {
 	}
 	public String toString(){
 		String s = super.toString();
-		s += "Sb_leak_rate: "+br.intBinaryString(sb_leak_rate,10)+"\n";
-		s += "Sb_size: "+br.intBinaryString(sb_size,10)+"\n";
+		s += "Sb_leak_rate: "+br.binaryString(sb_leak_rate,10)+"\n";
+		s += "Sb_size: "+br.binaryString(sb_size,10)+"\n";
 		return s;
 	}
 	public boolean equals(Object obj) {

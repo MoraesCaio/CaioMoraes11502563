@@ -15,21 +15,10 @@ public class CA_descriptor extends Descriptor {
 	}
 
 	public CA_descriptor read(FileInputStream fi){
-		try{
-			int xbyte1 = fi.read();
-			int xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			setCA_system_ID(xbyte1);
-			xbyte1 = fi.read();
-			xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			xbyte1 = br.intZerarBits(xbyte1, 19, 32);
-			setCA_PID(xbyte1);
-			for (int i = 0; i < (descriptor_length - 4); i++) {
-				setPrivate_data_byte(fi.read());
-			}
-		}catch(IOException e){
-			e.printStackTrace();
+		setCA_system_ID(br.lerBytes(fi, 2));
+		setCA_PID(br.zerarBits(br.lerBytes(fi, 2), 19));
+		for (int i = 0; i < (descriptor_length - 4); i++) {
+			setPrivate_data_byte(br.lerBytes(fi, 1));
 		}
 		return this;
 	}
@@ -56,10 +45,10 @@ public class CA_descriptor extends Descriptor {
 	}
 	public String toString(){
 		String s = super.toString();
-		s += "CA_system_ID: "+br.intBinaryString(CA_system_ID,16)+"\n";
-		s += "CA_PID: "+br.intBinaryString(CA_PID,19)+"\n";
+		s += "CA_system_ID: "+br.binaryString(CA_system_ID,16)+"\n";
+		s += "CA_PID: "+br.binaryString(CA_PID,19)+"\n";
 		for(Integer i : private_data_byte){
-			s += "Private_data_byte: "+br.intBinaryString(i,24)+"\n";
+			s += "Private_data_byte: "+br.binaryString(i,24)+"\n";
 		}
 		return s;
 	}

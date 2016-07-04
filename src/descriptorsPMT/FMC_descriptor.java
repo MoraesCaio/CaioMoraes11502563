@@ -8,15 +8,8 @@ public class FMC_descriptor extends Descriptor {
 	private class Unidade{
 
 		private Unidade read(FileInputStream fi){
-			try{
-				int xbyte1 = fi.read();
-				int xbyte2 = fi.read();
-				xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-				setES_ID(xbyte1);
-				setFlex_mux_channel(fi.read());
-			}catch(IOException e){
-				e.printStackTrace();
-			}
+			setES_ID(br.lerBytes(fi, 2));
+			setFlex_mux_channel(br.lerBytes(fi, 1));
 			return this;
 		}
 		private int ES_ID;
@@ -35,8 +28,8 @@ public class FMC_descriptor extends Descriptor {
 		}
 		public String toString(){
 			String s = "";
-			s += "ES_ID: "+br.intBinaryString(ES_ID,16)+"\n";
-			s += "Flex_mux_channel: "+br.intBinaryString(flex_mux_channel,24)+"\n";
+			s += "ES_ID: "+br.binaryString(ES_ID,16)+"\n";
+			s += "Flex_mux_channel: "+br.binaryString(flex_mux_channel,24)+"\n";
 			return s;
 		}
 		public boolean equals(Object obj) {

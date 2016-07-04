@@ -14,22 +14,9 @@ public class Copyright_descriptor extends Descriptor {
 		setDescriptor_length(descriptor_length);
 	}
 	public Copyright_descriptor read(FileInputStream fi){
-		try{
-			int xbyte1;
-			int xbyte2;
-			xbyte1 = fi.read();
-			xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			setCopyright_identifier(xbyte1);
-			for(int i = 0; i < (descriptor_length - 4); i++){
-				setAdditional_copyright_info(fi.read());
-			}
-		}catch(IOException e){
-			e.printStackTrace();
+		setCopyright_identifier(br.lerBytes(fi, 4));
+		for(int i = 0; i < (descriptor_length - 4); i++){
+			setAdditional_copyright_info(br.lerBytes(fi, 1));
 		}
 		return this;
 	}
@@ -49,9 +36,9 @@ public class Copyright_descriptor extends Descriptor {
 	}
 	public String toString(){
 		String s = super.toString();
-		s += "Copyright_identifier: "+br.intBinaryString(copyright_identifier)+"\n";
+		s += "Copyright_identifier: "+br.binaryString(copyright_identifier)+"\n";
 		for(Integer i : additional_copyright_info){
-			s += "Additional_copyright_info: "+br.intBinaryString(i,24)+"\n";
+			s += "Additional_copyright_info: "+br.binaryString(i,24)+"\n";
 		}
 		return s;
 	}

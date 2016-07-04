@@ -13,26 +13,22 @@ public class Video_stream_descriptor extends Descriptor {
 		setDescriptor_length(descriptor_length);
 	}
 	public Video_stream_descriptor read(FileInputStream fi){
-		try{
-			int xbyte1 = fi.read();
-			setMultiple_frame_rate_flag(br.intExtrairBit(xbyte1,8));
-			setMPEG1_only_flag(br.intExtrairBit(xbyte1,3));
-			setConstrained_parameter_flag(br.intExtrairBit(xbyte1,2));
-			setStill_picture_flag(br.intExtrairBit(xbyte1,1));
-			xbyte1 = xbyte1 >> 3;
-			xbyte1 = br.intZerarBits(xbyte1, 28, 32);
-			if(MPEG1_only_flag == 0){
-				int xbyte2 = 0;
-				setProfile_and_level_indication(fi.read());
-				xbyte1 = fi.read();
-				setFrame_rate_extension_flag(br.intExtrairBit(xbyte1, 6));
-				xbyte1 = br.intExtrairBit(xbyte1, 7);
-				xbyte1 = br.intExtrairBit(xbyte1, 8);
-				xbyte1 = br.concatBits(xbyte1, xbyte2);
-				setChroma_format(xbyte1);
-			}
-		}catch(IOException e){
-			e.printStackTrace();
+		int xbyte1 = br.lerBytes(fi, 1);
+		setMultiple_frame_rate_flag(br.extrairBit(xbyte1,8));
+		setMPEG1_only_flag(br.extrairBit(xbyte1,3));
+		setConstrained_parameter_flag(br.extrairBit(xbyte1,2));
+		setStill_picture_flag(br.extrairBit(xbyte1,1));
+		xbyte1 = xbyte1 >> 3;
+		xbyte1 = br.zerarBits(xbyte1, 28);
+		if(MPEG1_only_flag == 0){
+			int xbyte2 = 0;
+			setProfile_and_level_indication(br.lerBytes(fi, 1));
+			xbyte1 = br.lerBytes(fi, 1);
+			setFrame_rate_extension_flag(br.extrairBit(xbyte1, 6));
+			xbyte2 = br.extrairBit(xbyte1, 7);
+			xbyte1 = br.extrairBit(xbyte1, 8);
+			xbyte1 = br.shiftAndAddBit(xbyte1, xbyte2);
+			setChroma_format(xbyte1);
 		}
 		return this;
 	}
@@ -115,14 +111,14 @@ public class Video_stream_descriptor extends Descriptor {
 
 	public String toString(){
 		String s = super.toString();
-		s += "Multiple_frame_rate_flag: "+br.intBinaryString(multiple_frame_rate_flag,31)+"\n";
-		s += "Frame_rate_code: "+br.intBinaryString(frame_rate_code,28)+"\n";
-		s += "MPEG1_only_flag: "+br.intBinaryString(MPEG1_only_flag,31)+"\n";
-		s += "Constrained_parameter_flag: "+br.intBinaryString(constrained_parameter_flag,31)+"\n";
-		s += "Still_picture_flag: "+br.intBinaryString(still_picture_flag,31)+"\n";
-		s += "Profile_and_level_indication: "+br.intBinaryString(profile_and_level_indication,24)+"\n";
-		s += "Chroma_format: "+br.intBinaryString(chroma_format,30)+"\n";
-		s += "Frame_rate_extension_flag: "+br.intBinaryString(frame_rate_extension_flag,33)+"\n";
+		s += "Multiple_frame_rate_flag: "+br.binaryString(multiple_frame_rate_flag,31)+"\n";
+		s += "Frame_rate_code: "+br.binaryString(frame_rate_code,28)+"\n";
+		s += "MPEG1_only_flag: "+br.binaryString(MPEG1_only_flag,31)+"\n";
+		s += "Constrained_parameter_flag: "+br.binaryString(constrained_parameter_flag,31)+"\n";
+		s += "Still_picture_flag: "+br.binaryString(still_picture_flag,31)+"\n";
+		s += "Profile_and_level_indication: "+br.binaryString(profile_and_level_indication,24)+"\n";
+		s += "Chroma_format: "+br.binaryString(chroma_format,30)+"\n";
+		s += "Frame_rate_extension_flag: "+br.binaryString(frame_rate_extension_flag,33)+"\n";
 		return s;
 	}
 	public boolean equals(Object obj) {

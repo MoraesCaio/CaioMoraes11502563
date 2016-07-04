@@ -11,111 +11,83 @@ public class AdaptationField {
 		try{
 			int xbyte1 = 0;
 			int xbyte2 = 0;
-			xbyte1 = fi.read();
 			if(xbyte1 == 0){
-				setAdaptation_field_length(xbyte1);
+				setAdaptation_field_length(br.lerBytes(fi, 1));
 			}else{
-				xbyte1 = fi.read();
-				setDiscontinuity_indicator(br.intExtrairBit(8));
-				setRandom_access_indicator(br.intExtrairBit(7));
-				setElementary_stream_priority_indicator(br.intExtrairBit(6));
-				setPCR_flag(br.intExtrairBit(5));
-				setOPCR_flag(br.intExtrairBit(4));
-				setSplicing_point_flag(br.intExtrairBit(3));
-				setTransport_private_data_flag(br.intExtrairBit(2));
-				setAdaptation_field_extension_flag(br.intExtrairBit(1));
+				xbyte1 = br.lerBytes(fi, 1);
+				setDiscontinuity_indicator(br.extrairBit(xbyte1, 8));
+				setRandom_access_indicator(br.extrairBit(xbyte1, 7));
+				setElementary_stream_priority_indicator(br.extrairBit(xbyte1, 6));
+				setPCR_flag(br.extrairBit(xbyte1, 5));
+				setOPCR_flag(br.extrairBit(xbyte1, 4));
+				setSplicing_point_flag(br.extrairBit(xbyte1, 3));
+				setTransport_private_data_flag(br.extrairBit(xbyte1, 2));
+				setAdaptation_field_extension_flag(br.extrairBit(xbyte1, 1));
 			}
 			if(PCR_flag == 1){
 				//vai somando os bytes
-				xbyte1 = fi.read();
-				xbyte2 = fi.read();
-				xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-				xbyte2 = fi.read();
-				xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-				xbyte2 = fi.read();
-				xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-				program_clock_reference_base = br.intBinaryStringRaw(xbyte1);
+				program_clock_reference_base = br.binaryStringRaw(br.lerBytes(fi, 4));
 				//byte a seguir serve para dois campos
-				xbyte2 = fi.read();
-				xbyte1 = br.intExtrairBit(xbyte2, 8);
+				xbyte2 = br.lerBytes(fi, 1);
+				xbyte1 = br.extrairBit(xbyte2, 8);
 				program_clock_reference_base += Integer.toString(xbyte1);
-				xbyte1 = br.intExtrairBit(xbyte2, 1);
-				program_clock_reference_extension += Integer.toString(xbyte1);
-				xbyte1 = fi.read();
-				program_clock_reference_extension = br.intBinaryStringRaw(xbyte1);
+				xbyte1 = br.extrairBit(xbyte2, 1);
+				program_clock_reference_extension = Integer.toString(xbyte1);
+				program_clock_reference_extension += br.binaryStringRaw(br.lerBytes(fi, 1));
 			}
 			if(OPCR_flag == 1){
 				//vai somando os bytes
-				xbyte1 = fi.read();
-				xbyte2 = fi.read();
-				xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-				xbyte2 = fi.read();
-				xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-				xbyte2 = fi.read();
-				xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-				original_program_clock_reference_base = br.intBinaryStringRaw(xbyte1);
+				original_program_clock_reference_base = br.binaryStringRaw(br.lerBytes(fi, 1));
 				//byte a seguir serve para dois campos
-				xbyte2 = fi.read();
-				xbyte1 = br.intExtrairBit(xbyte2, 8);
+				xbyte2 = br.lerBytes(fi, 1);
+				xbyte1 = br.extrairBit(xbyte2, 8);
 				original_program_clock_reference_base += Integer.toString(xbyte1);
-				xbyte1 = br.intExtrairBit(xbyte2, 1);
-				original_program_clock_reference_extension += Integer.toString(xbyte1);
-				xbyte1 = fi.read();
-				original_program_clock_reference_extension = br.intBinaryStringRaw(xbyte1);
+				xbyte1 = br.extrairBit(xbyte2, 1);
+				original_program_clock_reference_extension = Integer.toString(xbyte1);
+				original_program_clock_reference_extension += br.binaryStringRaw(br.lerBytes(fi, 1));
 			}
 			if(splicing_point_flag == 1){
-				setSplice_countdown(fi.read());
+				setSplice_countdown(br.lerBytes(fi, 1));
 			}
 			if(transport_private_data_flag == 1){
-				setTransport_private_data_length(fi.read());
+				setTransport_private_data_length(br.lerBytes(fi, 1));
 				for(int i = 0; i < transport_private_data_length; i++){
-					setPrivate_data_byte(fi.read());
+					setPrivate_data_byte(br.lerBytes(fi, 1));
 				}
 			}
 			if(adaptation_field_extension_length == 1){
-				xbyte1 = fi.read();
-				setAdaptation_field_extension_length(xbyte1);
+				setAdaptation_field_extension_length(br.lerBytes(fi, 1));
 				int bytesRestantes = adaptation_field_extension_length - 1;
 				if(xbyte1 != 0 && xbyte1 != 1){
-					xbyte1 = fi.read();
-					setLtw_flag(br.intExtrairBit(xbyte1, 1));
-					setPiecewise_rate_flag(br.intExtrairBit(xbyte1, 2));
-					setSeamless_splice_flag(br.intExtrairBit(xbyte1, 3));
+					xbyte1 = br.lerBytes(fi, 1);
+					setLtw_flag(br.extrairBit(xbyte1, 8));
+					setPiecewise_rate_flag(br.extrairBit(xbyte1, 7));
+					setSeamless_splice_flag(br.extrairBit(xbyte1, 6));
 				}
 				if(ltw_flag == 1){
-					xbyte1 = fi.read();
-					xbyte2 = fi.read();
-					xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-					ltw_valid_flag = br.intExtrairBit(xbyte1, 1);
-					ltw_offset = br.intZerarBits(xbyte1, 1, 16);
+					xbyte1 = br.lerBytes(fi, 2);
+					ltw_valid_flag = br.extrairBit(xbyte1, 16);
+					ltw_offset = br.zerarBits(xbyte1, 17);
 					bytesRestantes -= 2;
 				}
 				if(piecewise_rate_flag == 1){
-					xbyte1 = fi.read();
-					xbyte2 = fi.read();
-					xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-					xbyte2 = fi.read();
-					xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-					xbyte1 = br.intZerarBits(xbyte1, 10, 32);
+					xbyte1 = br.lerBytes(fi, 3);
+					xbyte1 = br.zerarBits(xbyte1, 10);
 					setPiecewise_rate(xbyte1);
 					bytesRestantes -= 3;
 				}
 				if(seamless_splice_flag == 1){
-					xbyte1 = fi.read();
+					xbyte1 = br.lerBytes(fi, 1);
 					xbyte2 = xbyte1;
 					setSplice_type(xbyte1 >> 4);
 					xbyte2 = xbyte2 >> 1;
-					xbyte2 = br.intZerarBits(xbyte2, 29, 32);
+					xbyte2 = br.zerarBits(xbyte2, 29);
 					setDTS_next_AU(xbyte2);
-					xbyte1 = fi.read();
-					xbyte2 = fi.read();
-					xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-					xbyte1 = br.intZerarBits(xbyte1, 17, 32);
+					xbyte1 = br.lerBytes(fi, 2);
+					xbyte1 = br.zerarBits(xbyte1, 17);
 					setDTS_next_AU2(xbyte1);
-					xbyte1 = fi.read();
-					xbyte2 = fi.read();
-					xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-					xbyte1 = br.intZerarBits(xbyte1, 17, 32);
+					xbyte1 = br.lerBytes(fi, 2);
+					xbyte1 = br.zerarBits(xbyte1, 17);
 					setDTS_next_AU2(xbyte1);
 					bytesRestantes -= 5;
 				}
@@ -269,7 +241,7 @@ public class AdaptationField {
 	}
 	public void setSplice_countdown(int splice_countdown){
 		//ByteReader br = new ByteReader();
-		//br.intExtrairBit(splice_countdown, 8);
+		//br.extrairBit(splice_countdown, 8);
 		this.splice_countdown = (byte) splice_countdown;
 	}
 	//não deve exceder o tamanho restante de adaptation field
@@ -454,38 +426,38 @@ public class AdaptationField {
 		ByteReader br = new ByteReader();
 		int aux = 0;
 		String s = "";
-		s += "Adaptation_field_length: "+br.intBinaryString(adaptation_field_length,24)+"\n";
-		s += "Discontinuity_indicator: "+br.intBinaryString(discontinuity_indicator,31)+"\n";
-		s += "Random_access_indicator: "+br.intBinaryString(random_access_indicator,31)+"\n";
-		s += "Elementary_stream_priority_indicator: "+br.intBinaryString(elementary_stream_priority_indicator,31)+"\n";
-		s += "PCR_flag: "+br.intBinaryString(PCR_flag,31)+"\n";
-		s += "OPCR_flag: "+br.intBinaryString(OPCR_flag,31)+"\n";
-		s += "Splicing_point_flag: "+br.intBinaryString(splicing_point_flag,31)+"\n";
-		s += "Transport_private_data_flag: "+br.intBinaryString(transport_private_data_flag,31)+"\n";
-		s += "Adaptation_field_extension_flag: "+br.intBinaryString(adaptation_field_extension_flag,31)+"\n";
+		s += "Adaptation_field_length: "+br.binaryString(adaptation_field_length,24)+"\n";
+		s += "Discontinuity_indicator: "+br.binaryString(discontinuity_indicator,31)+"\n";
+		s += "Random_access_indicator: "+br.binaryString(random_access_indicator,31)+"\n";
+		s += "Elementary_stream_priority_indicator: "+br.binaryString(elementary_stream_priority_indicator,31)+"\n";
+		s += "PCR_flag: "+br.binaryString(PCR_flag,31)+"\n";
+		s += "OPCR_flag: "+br.binaryString(OPCR_flag,31)+"\n";
+		s += "Splicing_point_flag: "+br.binaryString(splicing_point_flag,31)+"\n";
+		s += "Transport_private_data_flag: "+br.binaryString(transport_private_data_flag,31)+"\n";
+		s += "Adaptation_field_extension_flag: "+br.binaryString(adaptation_field_extension_flag,31)+"\n";
 		s += "Program_clock_reference_base: "+program_clock_reference_base+"\n";
 		s += "Program_clock_reference_extension: "+program_clock_reference_extension+"\n";
 		s += "Original_program_clock_reference_base: "+original_program_clock_reference_base+"\n";
 		s += "Original_program_clock_reference_extension: "+original_program_clock_reference_extension+"\n";
 		s += "Splice_countdown: "+br.byteBinaryString(splice_countdown)+"\n";
-		s += "Transport_private_data_length: "+br.intBinaryString(transport_private_data_length,24)+"\n";
+		s += "Transport_private_data_length: "+br.binaryString(transport_private_data_length,24)+"\n";
 		for(Integer i : private_data_byte){
-			s += "Private_data_byte: "+br.intBinaryString(i,24)+"\n";
+			s += "Private_data_byte: "+br.binaryString(i,24)+"\n";
 		}
-		s += "Adaptation_field_extension_length: "+br.intBinaryString(adaptation_field_extension_length,24)+"\n";
-		s += "Ltw_flag: "+br.intBinaryString(ltw_flag,31)+"\n";
-		s += "Piecewise_rate_flag: "+br.intBinaryString(piecewise_rate_flag,31)+"\n";
-		s += "Seamless_splice_flag: "+br.intBinaryString(seamless_splice_flag,31)+"\n";
-		s += "Ltw_valid_flag: "+br.intBinaryString(ltw_valid_flag,31)+"\n";
-		s += "Ltw_offset: "+br.intBinaryString(ltw_offset,17)+"\n";
-		s += "Piecewise_rate: "+br.intBinaryString(piecewise_rate,10)+"\n";
-		s += "Splice_type: "+br.intBinaryString(splice_type,28)+"\n";
-		aux = br.intZerarBits(DTS_next_AU, 29, 32);
+		s += "Adaptation_field_extension_length: "+br.binaryString(adaptation_field_extension_length,24)+"\n";
+		s += "Ltw_flag: "+br.binaryString(ltw_flag,31)+"\n";
+		s += "Piecewise_rate_flag: "+br.binaryString(piecewise_rate_flag,31)+"\n";
+		s += "Seamless_splice_flag: "+br.binaryString(seamless_splice_flag,31)+"\n";
+		s += "Ltw_valid_flag: "+br.binaryString(ltw_valid_flag,31)+"\n";
+		s += "Ltw_offset: "+br.binaryString(ltw_offset,17)+"\n";
+		s += "Piecewise_rate: "+br.binaryString(piecewise_rate,10)+"\n";
+		s += "Splice_type: "+br.binaryString(splice_type,28)+"\n";
+		aux = br.zerarBits(DTS_next_AU, 29);
 		aux = aux << 15;
-		aux = aux | br.intZerarBits(DTS_next_AU2, 17, 32);
+		aux = aux | br.zerarBits(DTS_next_AU2, 17);
 		aux = aux << 15;
-		aux = aux | br.intZerarBits(DTS_next_AU3, 17, 32);
-		s += "DTS_next_AU: "+br.intBinaryString(aux)+"\n";
+		aux = aux | br.zerarBits(DTS_next_AU3, 17);
+		s += "DTS_next_AU: "+br.binaryString(aux)+"\n";
 		s += "Number of reserved bytes at the end of Adaptation Field Extension: "+reserved5.size();
 		return s;
 	}

@@ -10,27 +10,16 @@ public class PMT_SecaoN1 {
 	private Descriptor tempDescriptor;
 	ByteReader br = new ByteReader();
 	public PMT_SecaoN1 read(FileInputStream fi){
-		try{
-			int xbyte1 = fi.read();
-			int xbyte2;
-			setStream_type(xbyte1);
-			xbyte1 = fi.read();
-			xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			xbyte1 = br.intZerarBits(xbyte1, 19, 32);
-			setElementary_PID(xbyte1);
-			xbyte1 = fi.read();
-			xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			xbyte1 = br.intZerarBits(xbyte1, 20, 32);
-			setES_info_length(xbyte1);
-			for(int i = 0; i < ES_info_length;){
-				tempDescriptor = new Descriptor();
-				setListaDescriptor(tempDescriptor.read(fi));
-				i += 2 + tempDescriptor.getDescriptor_length();
-			}
-		}catch(IOException e){
-			e.printStackTrace();
+		int xbyte1;
+		setStream_type(br.lerBytes(fi, 1));
+		xbyte1 = br.zerarBits(br.lerBytes(fi, 2), 19);
+		setElementary_PID(xbyte1);
+		xbyte1 = br.zerarBits(br.lerBytes(fi, 2), 20);
+		setES_info_length(xbyte1);
+		for(int i = 0; i < ES_info_length;){
+			tempDescriptor = new Descriptor();
+			setListaDescriptor(tempDescriptor.read(fi));
+			i += 2 + tempDescriptor.getDescriptor_length();
 		}
 		return this;
 	}
@@ -64,9 +53,9 @@ public class PMT_SecaoN1 {
 	}
 	public String toString(){
 		String s = "\n";
-		s += "Stream_type: "+br.intBinaryString(stream_type,24)+"\n";
-		s += "Elementary_PID: "+br.intBinaryString(elementary_PID,19)+"\n";
-		s += "ES_info_length: "+br.intBinaryString(ES_info_length,20)+"\n";
+		s += "Stream_type: "+br.binaryString(stream_type,24)+"\n";
+		s += "Elementary_PID: "+br.binaryString(elementary_PID,19)+"\n";
+		s += "ES_info_length: "+br.binaryString(ES_info_length,20)+"\n";
 		s += "Lista de Descriptors:\n\n";
 		for(Descriptor d : listaDescriptor){
 			s += d+"\n";

@@ -13,25 +13,16 @@ public class Video_window_descriptor extends Descriptor {
 		setDescriptor_length(descriptor_length);
 	}
 	public Video_window_descriptor read(FileInputStream fi){
-		try{
-			int xbyte1 = fi.read();
-			int xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			xbyte1 = xbyte1 >> 2;
-			setHorizontal_offset(xbyte1);
-			xbyte2 = br.intZerarBits(xbyte2, 30, 32);
-			xbyte1 = xbyte2;
-			xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			xbyte1 = xbyte1 >> 4;
-			setVertical_offset(xbyte1);
-			xbyte2 = br.intZerarBits(xbyte2, 28, 32);
-			setWindow_priority(xbyte2);
-		}catch(IOException e){
-			e.printStackTrace();
-		}
+		int xbyte1;
+		int xbyte2;
+		xbyte1 = br.lerBytes(fi, 2);
+		xbyte2 = xbyte1 >> 2;
+		setHorizontal_offset(xbyte2);
+		xbyte1 = br.zerarBits(xbyte1, 30);
+		xbyte1 = br.shiftAndAddByte(xbyte1, br.lerBytes(fi, 2));
+		xbyte2 = xbyte1 >> 4;
+		setVertical_offset(xbyte2);
+		setWindow_priority(br.zerarBits(xbyte1, 28));
 		return this;
 	}
 	private int horizontal_offset;
@@ -57,9 +48,9 @@ public class Video_window_descriptor extends Descriptor {
 	}
 	public String toString(){
 		String s = super.toString();
-		s += "Horizontal_offset: "+br.intBinaryString(horizontal_offset,18)+"\n";
-		s += "Vertical_offset: "+br.intBinaryString(vertical_offset,18)+"\n";
-		s += "Window_priority: "+br.intBinaryString(window_priority,28)+"\n";
+		s += "Horizontal_offset: "+br.binaryString(horizontal_offset,18)+"\n";
+		s += "Vertical_offset: "+br.binaryString(vertical_offset,18)+"\n";
+		s += "Window_priority: "+br.binaryString(window_priority,28)+"\n";
 		return s;
 	}
 	public boolean equals(Object obj) {

@@ -7,42 +7,34 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 public class TS_Header {
 	ByteReader br = new ByteReader();
 	public TS_Header read(FileInputStream fi){
-		try{
-			int xbyte1 = 0;
-			int xbyte2 = 0;
-			int xbyte3 = 0;
-			xbyte1 = fi.read();
-			setSync_byte(xbyte1);
-			xbyte1 = fi.read();
-			setTransport_error_indicator(br.intExtrairBit(xbyte1,8));
-			setPayload_unit_start_indicator(br.intExtrairBit(xbyte1,7));
-			setTransport_priority(br.intExtrairBit(xbyte1,6));
-			//manipulação de PID
-			xbyte1 = br.intZerarBits(xbyte1, 3, 8);//retira os indicadores
-			xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			setPID(xbyte1);
-			//4º byte do Header
-			xbyte1 = fi.read();
-			//manipulação de Scrambling Control
-			xbyte2 = br.intExtrairBit(xbyte1,8);
-			xbyte3 = br.intExtrairBit(xbyte1,7);
-			xbyte2 = br.concatBits(xbyte2, xbyte3);
-			setTransport_scrambling_control(xbyte2);
-			//manipulação de Adaptatio Field Control
-			xbyte2 = br.intExtrairBit(xbyte1,6);
-			xbyte3 = br.intExtrairBit(xbyte1,5);
-			xbyte2 = br.concatBits(xbyte2, xbyte3);
-			setAdaptation_field_control(xbyte2);
-			//manipulação de Continuity counter
-			xbyte1 = br.intZerarBits(xbyte1, 4, 8); //zera o Scontrol e o AFcontrol
-			setContinuity_counter(xbyte1);
-		}catch(IOException e){
-			e.printStackTrace();
-		}
+		int xbyte1 = 0;
+		int xbyte2 = 0;
+		int xbyte3 = 0;
+		setSync_byte(br.lerBytes(fi, 1));
+		xbyte1 = br.lerBytes(fi, 1);
+		setTransport_error_indicator(br.extrairBit(xbyte1,8));
+		setPayload_unit_start_indicator(br.extrairBit(xbyte1,7));
+		setTransport_priority(br.extrairBit(xbyte1,6));
+		//manipulação de PID
+		xbyte1 = br.zerarBits(xbyte1, 27);//retira os indicadores
+		xbyte1 = br.shiftAndAddByte(xbyte1, br.lerBytes(fi, 1));
+		setPID(xbyte1);
+		//4º byte do Header
+		xbyte1 = br.lerBytes(fi, 1);
+		//manipulação de Scrambling Control
+		xbyte2 = br.extrairBit(xbyte1,8);
+		xbyte3 = br.extrairBit(xbyte1,7);
+		xbyte2 = br.shiftAndAddBit(xbyte2, xbyte3);
+		setTransport_scrambling_control(xbyte2);
+		//manipulação de Adaptation Field Control
+		xbyte2 = br.extrairBit(xbyte1,6);
+		xbyte3 = br.extrairBit(xbyte1,5);
+		xbyte2 = br.shiftAndAddBit(xbyte2, xbyte3);
+		setAdaptation_field_control(xbyte2);
+		//manipulação de Continuity counter
+		setContinuity_counter(br.zerarBits(xbyte1, 28)); //zera o Scontrol e o AFcontrol
 		return this;
 	}
-	
 	private int sync_byte;
 	public int getSync_byte(){
 		return sync_byte;
@@ -122,14 +114,14 @@ public class TS_Header {
 	public String toString(){
 		String s = "";
 		//s += "\nHeader:";
-		s += "sync_byte: " + br.intBinaryString(sync_byte,24)+" = "+sync_byte;
-		s += "\ntransport_error_indicator: " + br.intBinaryString(transport_error_indicator,31);
-		s += "\npayload_unit_start_indicator: " + br.intBinaryString(payload_unit_start_indicator,31);
-		s += "\ntransport_priority: " + br.intBinaryString(transport_priority,31);
-		s += "\nPID: " + br.intBinaryString(PID,19)+" = "+PID;
-		s += "\ntransport_scrambling_control: " + br.intBinaryString(transport_scrambling_control,30);
-		s += "\nadaptation_field_control: " + br.intBinaryString(adaptation_field_control,30);
-		s += "\ncontinuity_counter: " + br.intBinaryString(continuity_counter,28);
+		s += "sync_byte: " + br.binaryString(sync_byte,24)+" = "+sync_byte;
+		s += "\ntransport_error_indicator: " + br.binaryString(transport_error_indicator,31);
+		s += "\npayload_unit_start_indicator: " + br.binaryString(payload_unit_start_indicator,31);
+		s += "\ntransport_priority: " + br.binaryString(transport_priority,31);
+		s += "\nPID: " + br.binaryString(PID,19)+" = "+PID;
+		s += "\ntransport_scrambling_control: " + br.binaryString(transport_scrambling_control,30);
+		s += "\nadaptation_field_control: " + br.binaryString(adaptation_field_control,30);
+		s += "\ncontinuity_counter: " + br.binaryString(continuity_counter,28);
 		return s;
 	}
 	public boolean equals(Object obj) {

@@ -10,59 +10,44 @@ public class PAT_Body {
 	private static PAT_SecaoN currentTempN;// = new PAT_SecaoN();
 	private static PAT_SecaoN previousTempN;// = new PAT_SecaoN();
 	public PAT_Body read(FileInputStream fi){
-		try{
-			int xbyte1 = fi.read();
-			int xbyte2;
-			setTable_id(xbyte1);
-			xbyte1 = fi.read();
-			setSection_syntax_indicator(br.intExtrairBit(xbyte1, 8));
-			xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			xbyte1 = br.intZerarBits(xbyte1, 20, 32);
-			setSection_length(xbyte1);
-			xbyte1 = fi.read();
-			xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			setTransport_stream_id(xbyte1);
-			xbyte1 = fi.read();
-			setCurrent_next_indicator(br.intExtrairBit(xbyte1, 1));
-			xbyte1 = xbyte1 >> 1;
-			xbyte1 = br.intZerarBits(xbyte1, 27, 32);
-			setVersion_number(xbyte1);
-			setSection_number(fi.read());
-			setLast_section_number(fi.read());
-			for(int i = 0; i < (section_length-12); i += 4){
-				if(i == 0){
-					previousTempN = new PAT_SecaoN();
-					previousTempN.read(fi);
-					setElementosSecaoN(previousTempN);
-				}else{
-					currentTempN = new PAT_SecaoN();
-					currentTempN.read(fi);
-					if(!previousTempN.equals(currentTempN)){
-						previousTempN = currentTempN;
-						setElementosSecaoN(currentTempN);
-					}
+		int xbyte1;
+		setTable_id(br.lerBytes(fi, 1));
+		xbyte1 = br.lerBytes(fi, 2);
+		setSection_syntax_indicator(br.extrairBit(xbyte1, 16));
+		setSection_length(br.zerarBits(xbyte1, 20));
+		setTransport_stream_id(br.lerBytes(fi, 2));
+		xbyte1 = br.lerBytes(fi, 1);
+		setCurrent_next_indicator(br.extrairBit(xbyte1, 1));
+		xbyte1 = xbyte1 >> 1;
+		setVersion_number(br.zerarBits(xbyte1, 27));
+		setSection_number(br.lerBytes(fi, 1));
+		setLast_section_number(br.lerBytes(fi, 1));
+		for(int i = 0; i < (section_length-12); i += 4){
+			if(i == 0){
+				previousTempN = new PAT_SecaoN();
+				previousTempN.read(fi);
+				setElementosSecaoN(previousTempN);
+			}else{
+				currentTempN = new PAT_SecaoN();
+				currentTempN.read(fi);
+				if(!previousTempN.equals(currentTempN)){
+					previousTempN = currentTempN;
+					setElementosSecaoN(currentTempN);
 				}
 			}
-			for(PAT_SecaoN n : elementosSecaoN){
-				if(n.getProgram_number() == 0){
+		}
+		for(PAT_SecaoN n : elementosSecaoN){
+			if(n.getProgram_number() == 0){
+				if(!listaNetwork_PID.contains(n.getNetwork_PID())){
 					listaNetwork_PID.add(n.getNetwork_PID());
-				}else{
+				}
+			}else{
+				if(!listaPMT_PID.contains(n.getProgram_map_PID())){
 					listaPMT_PID.add(n.getProgram_map_PID());
 				}
 			}
-			xbyte1 = fi.read();
-			xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			setSection_CRC(xbyte1);
-		}catch(IOException e){
-			e.printStackTrace();
 		}
+		setSection_CRC(br.lerBytes(fi, 4));
 		return this;
 	}
 	private ArrayList<Integer> listaPMT_PID = new ArrayList<Integer>();
@@ -191,19 +176,19 @@ public class PAT_Body {
 
 	public String toString(){
 		String s = "";
-		s += "Table_id: "+br.intBinaryString(table_id,24)+"\n";
-		s += "Section_syntax_indicator: "+br.intBinaryString(section_syntax_indicator,31)+"\n";
-		s += "Section_length: "+br.intBinaryString(section_length,20)+"\n";
-		s += "Transport_stream_id: "+br.intBinaryString(transport_stream_id,16)+"\n";
-		s += "Version_number: "+br.intBinaryString(version_number,27)+"\n";
-		s += "Current_next_indicator: "+br.intBinaryString(current_next_indicator,31)+"\n";
-		s += "Section_number: "+br.intBinaryString(section_number,24)+"\n";
-		s += "Last_section_number: "+br.intBinaryString(last_section_number,24)+"\n";
+		s += "Table_id: "+br.binaryString(table_id,24)+"\n";
+		s += "Section_syntax_indicator: "+br.binaryString(section_syntax_indicator,31)+"\n";
+		s += "Section_length: "+br.binaryString(section_length,20)+"\n";
+		s += "Transport_stream_id: "+br.binaryString(transport_stream_id,16)+"\n";
+		s += "Version_number: "+br.binaryString(version_number,27)+"\n";
+		s += "Current_next_indicator: "+br.binaryString(current_next_indicator,31)+"\n";
+		s += "Section_number: "+br.binaryString(section_number,24)+"\n";
+		s += "Last_section_number: "+br.binaryString(last_section_number,24)+"\n";
 		s += "PID\n";
 		for(PAT_SecaoN n : elementosSecaoN){
 			s += n;
 		}
-		s += "Section_CRC: "+br.intBinaryString(section_CRC)+" = "+	String.format("%x", section_CRC) + "\n";
+		s += "Section_CRC: "+br.binaryString(section_CRC)+" = "+	String.format("%x", section_CRC) + "\n";
 		s += "-----------------------------------------------------------------";
 		return s;
 	}

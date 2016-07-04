@@ -12,14 +12,7 @@ public class STD_descriptor extends Descriptor {
 		setDescriptor_length(descriptor_length);
 	}
 	public STD_descriptor read(FileInputStream fi){
-		try{
-			int xbyte1 = fi.read();
-			xbyte1 = br.intExtrairBit(xbyte1,1);
-			setLeak_valid_flag(xbyte1);
-
-		}catch(IOException e){
-			e.printStackTrace();
-		}
+		setLeak_valid_flag(br.extrairBit(br.lerBytes(fi, 1),1));
 		return this;
 	}
 	private int leak_valid_flag;
@@ -31,7 +24,7 @@ public class STD_descriptor extends Descriptor {
 	}
 	public String toString(){
 		String s = super.toString();
-		s += "Leak_valid_flag: "+br.intBinaryString(leak_valid_flag,31)+"\n";
+		s += "Leak_valid_flag: "+br.binaryString(leak_valid_flag,31)+"\n";
 		return s;
 	}
 	public boolean equals(Object obj) {

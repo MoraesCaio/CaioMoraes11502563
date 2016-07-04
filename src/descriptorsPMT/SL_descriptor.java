@@ -14,15 +14,7 @@ public class SL_descriptor extends Descriptor {
 	}
 
 	public SL_descriptor read(FileInputStream fi){
-		try{
-			int xbyte1 = fi.read();
-			int xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			setES_ID(xbyte1);
-
-		}catch(IOException e){
-			e.printStackTrace();
-		}
+		setES_ID(br.lerBytes(fi, 2));
 		return this;
 	}
 	private int ES_ID;
@@ -34,7 +26,7 @@ public class SL_descriptor extends Descriptor {
 	}
 	public String toString(){
 		String s = super.toString();
-		s += "ES_ID: "+br.intBinaryString(ES_ID,16)+"\n";
+		s += "ES_ID: "+br.binaryString(ES_ID,16)+"\n";
 		return s;
 	}
 	public boolean equals(Object obj) {
