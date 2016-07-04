@@ -12,14 +12,7 @@ public class External_ES_ID_descriptor extends Descriptor {
 		setDescriptor_length(descriptor_length);
 	}
 	public External_ES_ID_descriptor read(FileInputStream fi){
-		try{
-			int xbyte1 = fi.read();
-			int xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			setExternal_ES_ID(xbyte1);
-		}catch(IOException e){
-			e.printStackTrace();
-		}
+		setExternal_ES_ID(br.lerBytes(fi, 2));
 		return this;
 	}
 
@@ -32,7 +25,7 @@ public class External_ES_ID_descriptor extends Descriptor {
 	}
 	public String toString(){
 		String s = super.toString();
-		s += "External_ES_ID: "+br.intBinaryString(external_ES_ID,16)+"\n";
+		s += "External_ES_ID: "+br.binaryString(external_ES_ID,16)+"\n";
 		return s;
 	}
 

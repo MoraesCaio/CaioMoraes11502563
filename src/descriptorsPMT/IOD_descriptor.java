@@ -13,13 +13,9 @@ public class IOD_descriptor extends Descriptor {
 	}
 
 	public IOD_descriptor read(FileInputStream fi){
-		try{
-			setScope_of_IOD_label(fi.read());
-			setIOD_label(fi.read());
-			setInitialObjectDescriptor(fi.read());
-		}catch(IOException e){
-			e.printStackTrace();
-		}
+		setScope_of_IOD_label(br.lerBytes(fi, 1));
+		setIOD_label(br.lerBytes(fi, 1));
+		setInitialObjectDescriptor(br.lerBytes(fi, 1));
 		return this;
 	}
 	private int scope_of_IOD_label;
@@ -45,9 +41,9 @@ public class IOD_descriptor extends Descriptor {
 	}
 	public String toString(){
 		String s = super.toString();
-		s += "Scope_of_IOD_label: "+br.intBinaryString(scope_of_IOD_label,24)+"\n";
-		s += "IOD_label: "+br.intBinaryString(IOD_label,24)+"\n";
-		s += "InitialObjectDescriptor: "+br.intBinaryString(InitialObjectDescriptor,24)+"\n";
+		s += "Scope_of_IOD_label: "+br.binaryString(scope_of_IOD_label,24)+"\n";
+		s += "IOD_label: "+br.binaryString(IOD_label,24)+"\n";
+		s += "InitialObjectDescriptor: "+br.binaryString(InitialObjectDescriptor,24)+"\n";
 		return s;
 	}
 	public boolean equals(Object obj) {

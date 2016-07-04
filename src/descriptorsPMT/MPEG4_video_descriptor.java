@@ -12,11 +12,7 @@ public class MPEG4_video_descriptor extends Descriptor{
 		setDescriptor_length(descriptor_length);
 	}
 	public MPEG4_video_descriptor read(FileInputStream fi){
-		try{
-			setMPEG4_visual_profile_and_level(fi.read());
-		}catch(IOException e){
-			e.printStackTrace();
-		}
+		setMPEG4_visual_profile_and_level(br.lerBytes(fi, 1));
 		return this;
 	}
 	private int MPEG4_visual_profile_and_level;
@@ -28,7 +24,7 @@ public class MPEG4_video_descriptor extends Descriptor{
 	}
 	public String toString(){
 		String s = super.toString();
-		s += "MPEG4_visual_profile_and_level: "+br.intBinaryString(MPEG4_visual_profile_and_level,24)+"\n";
+		s += "MPEG4_visual_profile_and_level: "+br.binaryString(MPEG4_visual_profile_and_level,24)+"\n";
 		return s;
 	}
 	public boolean equals(Object obj) {

@@ -13,17 +13,12 @@ public class Audio_stream_descriptor extends Descriptor {
 		setDescriptor_length(descriptor_length);
 	}
 	public Audio_stream_descriptor read(FileInputStream fi){
-		try{
-			int xbyte1 = fi.read();
-			setFree_format_flag(br.intExtrairBit(xbyte1, 8));
-			setID(br.intExtrairBit(xbyte1, 7));
-			setVariable_rate_audio_indicator(br.intExtrairBit(xbyte1, 4));
-			xbyte1 = xbyte1 >> 4;
-			xbyte1 = br.intZerarBits(xbyte1, 30, 32);
-			setLayer(xbyte1);
-		}catch(IOException e){
-			e.printStackTrace();
-		}
+		int xbyte1 = br.lerBytes(fi, 1);
+		setFree_format_flag(br.extrairBit(xbyte1, 8));
+		setID(br.extrairBit(xbyte1, 7));
+		setVariable_rate_audio_indicator(br.extrairBit(xbyte1, 4));
+		xbyte1 = xbyte1 >> 4;
+		setLayer(br.zerarBits(xbyte1, 30));
 		return this;
 	}
 	private int free_format_flag;
@@ -69,10 +64,10 @@ public class Audio_stream_descriptor extends Descriptor {
 	
 	public String toString(){
 		String s = super.toString();
-		s += "Free_format_flag: "+br.intBinaryString(free_format_flag,31)+"\n";
-		s += "ID: "+br.intBinaryString(ID,31)+"\n";
-		s += "Layer: "+br.intBinaryString(layer,30)+"\n";
-		s += "Variable_rate_audio_indicator: "+br.intBinaryString(variable_rate_audio_indicator,31)+"\n";
+		s += "Free_format_flag: "+br.binaryString(free_format_flag,31)+"\n";
+		s += "ID: "+br.binaryString(ID,31)+"\n";
+		s += "Layer: "+br.binaryString(layer,30)+"\n";
+		s += "Variable_rate_audio_indicator: "+br.binaryString(variable_rate_audio_indicator,31)+"\n";
 		return s;
 	}
 	public boolean equals(Object obj) {

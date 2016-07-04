@@ -11,61 +11,34 @@ public class PMT_Body {
 	private static PMT_SecaoN1 tempPMTSecaoN1;
 	private static Descriptor tempDescriptor;
 	public PMT_Body read(FileInputStream fi){
-		try{
-			setTable_id(fi.read());
-			int xbyte1 = fi.read();
-			int xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			xbyte2 = br.intExtrairBit(xbyte1,16);
-			setSection_syntax_indicator(xbyte2);
-			xbyte1 = br.intZerarBits(xbyte1, 20, 32);
-			setSection_length(xbyte1);
-			xbyte1 = fi.read();
-			xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			setProgram_number(xbyte1);
-			xbyte1 = fi.read();
-			xbyte2 = br.intExtrairBit(xbyte1,1);
-			setCurrent_next_indicator(xbyte2);
-			xbyte1 = xbyte1 >> 1;
-			xbyte1 = br.intZerarBits(xbyte1, 27, 32);
-			setVersion_number(xbyte1);
-			setSection_number(fi.read());
-			setLast_section_number(fi.read());
-			xbyte1 = fi.read();
-			xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			setPCR_PID(xbyte1);
-			xbyte1 = fi.read();
-			xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			xbyte1 = br.intZerarBits(xbyte1, 20, 32);
-			setProgram_info_length(xbyte1);
-			//tamanho da seção n1 é section - 9 (das outras variáveis) - program_info_length - 4(do CRC)
-			int tamanhoSecaoN1 = section_length - 9 - program_info_length - 4;
-			//desN
-			for(int i = 0; i < program_info_length;){
-				tempDescriptor = new Descriptor();
-				setDescriptorsN(tempDescriptor.read(fi));
-				i += 2 + tempDescriptor.getDescriptor_length();
-			}
-			//desN1
-			for(int i = 0; i < tamanhoSecaoN1;){
-				tempPMTSecaoN1 = new PMT_SecaoN1();
-				setSecao_descriptorsN1(tempPMTSecaoN1.read(fi));
-				i += 5 + tempPMTSecaoN1.getES_info_length();
-			}
-			xbyte1 = fi.read();
-			xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			setCRC_32(xbyte1);
-		}catch(IOException e){
-			e.printStackTrace();
+		setTable_id(br.lerBytes(fi, 1));
+		int xbyte1 = br.lerBytes(fi, 2);
+		setSection_syntax_indicator(br.extrairBit(xbyte1,16));
+		setSection_length(br.zerarBits(xbyte1, 20));
+		setProgram_number(br.lerBytes(fi, 2));
+		xbyte1 = br.lerBytes(fi, 1);
+		setCurrent_next_indicator(br.extrairBit(xbyte1,1));
+		xbyte1 = xbyte1 >> 1;
+		setVersion_number(br.zerarBits(xbyte1, 27));
+		setSection_number(br.lerBytes(fi, 1));
+		setLast_section_number(br.lerBytes(fi, 1));
+		setPCR_PID(br.zerarBits(br.lerBytes(fi, 2), 19));
+		setProgram_info_length(br.zerarBits(br.lerBytes(fi, 2), 20));
+		//tamanho da seção n1 é section - 9 (das outras variáveis) - program_info_length - 4(do CRC)
+		int tamanhoSecaoN1 = section_length - 9 - program_info_length - 4;
+		//desN
+		for(int i = 0; i < program_info_length;){
+			tempDescriptor = new Descriptor();
+			setDescriptorsN(tempDescriptor.read(fi));
+			i += 2 + tempDescriptor.getDescriptor_length();
 		}
+		//desN1
+		for(int i = 0; i < tamanhoSecaoN1;){
+			tempPMTSecaoN1 = new PMT_SecaoN1();
+			setSecao_descriptorsN1(tempPMTSecaoN1.read(fi));
+			i += 5 + tempPMTSecaoN1.getES_info_length();
+		}
+		setCRC_32(br.lerBytes(fi, 4));
 		return this;
 	}
 	//tem que ser 0x02
@@ -171,16 +144,16 @@ public class PMT_Body {
 	}
 	public String toString(){
 		String s = "";
-		s += "Table_id: "+br.intBinaryString(table_id,24)+" = "+table_id+"\n";
-		s += "Section_syntax_indicator: "+br.intBinaryString(section_syntax_indicator,31)+"\n";
-		s += "Section_length: "+br.intBinaryString(section_length,20)+" = "+section_length+"\n";
-		s += "Program_number: "+br.intBinaryString(program_number,16)+"\n";
-		s += "Version_number: "+br.intBinaryString(version_number,27)+"\n";
-		s += "Current_next_indicator: "+br.intBinaryString(current_next_indicator,31)+"\n";
-		s += "Section_number: "+br.intBinaryString(section_number,24)+"\n";
-		s += "Last_section_number: "+br.intBinaryString(last_section_number,24)+"\n";
-		s += "PCR_PID: "+br.intBinaryString(PCR_PID,19)+" = "+PCR_PID+"\n";
-		s += "Program_info_length: "+br.intBinaryString(program_info_length,20)+" = "+program_info_length+"\n";
+		s += "Table_id: "+br.binaryString(table_id,24)+" = "+table_id+"\n";
+		s += "Section_syntax_indicator: "+br.binaryString(section_syntax_indicator,31)+"\n";
+		s += "Section_length: "+br.binaryString(section_length,20)+" = "+section_length+"\n";
+		s += "Program_number: "+br.binaryString(program_number,16)+"\n";
+		s += "Version_number: "+br.binaryString(version_number,27)+"\n";
+		s += "Current_next_indicator: "+br.binaryString(current_next_indicator,31)+"\n";
+		s += "Section_number: "+br.binaryString(section_number,24)+"\n";
+		s += "Last_section_number: "+br.binaryString(last_section_number,24)+"\n";
+		s += "PCR_PID: "+br.binaryString(PCR_PID,19)+" = "+PCR_PID+"\n";
+		s += "Program_info_length: "+br.binaryString(program_info_length,20)+" = "+program_info_length+"\n";
 		s += "\nPROGRAM INFO\n\n";
 		for(Descriptor d : descriptorsN){
 			s += d+"\n";
@@ -190,7 +163,7 @@ public class PMT_Body {
 		for(PMT_SecaoN1 n1 : secao_descriptorsN1){
 			s += n1;
 		}
-		s += "CRC_32: "+br.intBinaryString(CRC_32)+" = "+String.format("%x", CRC_32)+"\n";
+		s += "CRC_32: "+br.binaryString(CRC_32)+" = "+String.format("%x", CRC_32)+"\n";
 		s += "------------------------------------------------------------";
 		return s;
 	}

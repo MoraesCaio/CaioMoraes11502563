@@ -15,19 +15,9 @@ public class Registration_descriptor extends Descriptor {
 	}
 
 	public Registration_descriptor read(FileInputStream fi){
-		try{
-			int xbyte1 = fi.read();
-			int xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			xbyte2 = fi.read();
-			xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-			for(int i = 0; i < (descriptor_length - 4); i++){
-				setAdditional_identification_info(fi.read());
-			}
-		}catch(IOException e){
-			e.printStackTrace();
+		setFormat_identifier(br.lerBytes(fi, 4));
+		for(int i = 0; i < (descriptor_length - 4); i++){
+			setAdditional_identification_info(br.lerBytes(fi, 1));
 		}
 		return this;
 	}
@@ -47,9 +37,9 @@ public class Registration_descriptor extends Descriptor {
 	}
 	public String toString(){
 		String s = super.toString();
-		s += "Format_identifier: "+br.intBinaryString(format_identifier)+"\n";
+		s += "Format_identifier: "+br.binaryString(format_identifier)+"\n";
 		for(Integer i : additional_identification_info){
-			s += "Additional_identification_info: "+br.intBinaryString(i,24)+"\n";
+			s += "Additional_identification_info: "+br.binaryString(i,24)+"\n";
 		}
 		return s;
 	}

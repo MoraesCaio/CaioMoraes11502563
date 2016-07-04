@@ -7,25 +7,11 @@ import manipulacaoBitByte.ByteReader;
 public class PAT_SecaoN {
 	ByteReader br = new ByteReader();
 	public PAT_SecaoN read(FileInputStream fi){
-		try{
-			int xbyte1 = fi.read();
-			int xbyte2 = fi.read();
-			setProgram_number(br.shiftAndAddByte(xbyte1, xbyte2));
-			if(program_number == 0){
-				xbyte1 = fi.read();
-				xbyte2 = fi.read();
-				xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-				xbyte1 = br.intZerarBits(xbyte1, 19, 32);
-				setNetwork_PID(xbyte1);
-			}else{
-				xbyte1 = fi.read();
-				xbyte2 = fi.read();
-				xbyte1 = br.shiftAndAddByte(xbyte1, xbyte2);
-				xbyte1 = br.intZerarBits(xbyte1, 19, 32);
-				setProgram_map_PID(xbyte1);
-			}
-		}catch(IOException e){
-			e.printStackTrace();
+		setProgram_number(br.lerBytes(fi, 2));
+		if(program_number == 0){
+			setNetwork_PID(br.zerarBits(br.lerBytes(fi, 2), 19));
+		}else{
+			setProgram_map_PID(br.zerarBits(br.lerBytes(fi, 2), 19));
 		}
 		return this;
 	}
@@ -75,9 +61,9 @@ public class PAT_SecaoN {
 	
 	public String toString(){
 		String s = "";
-		s += "\nProgram_number: "+br.intBinaryString(program_number,16)+"\n";
-		s += "Network_PID: "+br.intBinaryString(network_PID,19)+" = "+network_PID+"\n";
-		s += "Program_map_PID: "+br.intBinaryString(program_map_PID,19)+" = "+program_map_PID+"\n\n";
+		s += "\nProgram_number: "+br.binaryString(program_number,16)+"\n";
+		s += "Network_PID: "+br.binaryString(network_PID,19)+" = "+network_PID+"\n";
+		s += "Program_map_PID: "+br.binaryString(program_map_PID,19)+" = "+program_map_PID+"\n\n";
 		return s;
 	}
 

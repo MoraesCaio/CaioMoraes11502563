@@ -99,8 +99,8 @@ public class TS_Reader {
 				tempHeader = new TS_Header();
 				tempHeader.read(fi);
 				if(tempHeader.getPID() == 0){
-					listaPATWriter.write("\ni\n");
 					number_PAT++;
+					listaPATWriter.write("\n"+number_PAT+"\n");
 					//leitura
 					tempAF = new AdaptationField();
 					tempAF = tempAF.read(fi);
@@ -128,8 +128,8 @@ public class TS_Reader {
 					//quantos bytes faltam: tamanhoTS -header-adapField-3-section
 					pularBytes(188-(4+(1+tempAF.getAdaptation_field_length())+(3+tempPATBody.getSection_length())));
 				}else if(PMT_PID.contains(tempHeader.getPID())){
-					listaPMTWriter.write("\ni\n");
 					number_PMT++;
+					listaPMTWriter.write("\n"+number_PMT+"\n");
 					//leitura
 					tempAF = new AdaptationField();
 					tempAF = tempAF.read(fi);
